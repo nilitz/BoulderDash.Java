@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component inherit-compiler-output="true" inheritJdk="true">
+	<output-test url="file://$MODULE_DIR$/../../../out/test/main3"/>
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<levels>
+		<level name="view-0.0.1-SNAPSHOT" value="project"/>
+		<level name="contract-0.0.1-SNAPSHOT" value="project"/>
+		<level name="model-0.0.1-SNAPSHOT" value="project"/>
+		<level name="target" value="project"/>
+		<level name="controller-0.0.1-SNAPSHOT" value="project"/>
+	</levels>
+</component>

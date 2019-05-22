@@ -16,7 +16,7 @@ public interface IModel {
 	 *
 	 * @return the helloworld entity
 	 */
-	public HelloWorld getHelloWorld();
+	HelloWorld getHelloWorld();
 
 	/**
 	 * Load the message.
