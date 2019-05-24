@@ -1,0 +1,7 @@
+Invoking Maven for the goals: [org.codehaus.mojo:clirr-maven-plugin:2.2.2:check] with properties={failOnError=false, textOutputFile=C:\[DOSSIER]\[TRAVAIL]\[CESI]\[2018-2019]\[PROJETS]\[5] JAVA\JPU-BlankProject\JPU-BlankProject\target\clirr2020040359.txt, comparisonVersion=(,0.0.1-SNAPSHOT)}
+
+M2_HOME=C:\Users\hugod\AppData\Local\JetBrains\Toolbox\apps\IDEA-U\ch-0\191.7141.44\plugins\maven\lib\maven3
+MAVEN_OPTS=null
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_212\jre\..
+JAVA_OPTS=null
+
