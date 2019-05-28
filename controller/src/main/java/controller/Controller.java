@@ -75,7 +75,7 @@ public final class Controller implements IController {
 	 *
 	 * @see contract.IController#orderPerform(contract.ControllerOrder)
 	 */
-	ArrayList <String> Map = new ArrayList<>();
+	
 
 	public void moveUpDown(int index){
 		if (mapTiles.get(index).getName().equals("Ground_One") || mapTiles.get(index).getName().equals("Ground_Two")){
@@ -103,8 +103,8 @@ public final class Controller implements IController {
 	}
 
 	public void orderPerform(final ControllerOrder controllerOrder) {
-		for (int i = 0; i <= Map.size(); i++){
-			if (Map.get(i).getName()=="Player"){
+		for (int i = 0; i <= mapTiles.size(); i++){
+			if (mapTiles.get(i).getName()=="Player"){
 				Direction direction;
 				switch (controllerOrder) {
 					case Up:
