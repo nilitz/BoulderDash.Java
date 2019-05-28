@@ -4,6 +4,9 @@ import contract.ControllerOrder;
 import contract.IController;
 import contract.IModel;
 import contract.IView;
+import org.graalvm.compiler.loop.InductionVariable;
+
+import java.util.ArrayList;
 
 /**
  * The Class Controller.
@@ -72,22 +75,57 @@ public final class Controller implements IController {
 	 *
 	 * @see contract.IController#orderPerform(contract.ControllerOrder)
 	 */
+	ArrayList <String> Map = new ArrayList<>();
+
+	public void moveUpDown(int index){
+		if (mapTiles.get(index).getName().equals("Ground_One") || mapTiles.get(index).getName().equals("Ground_Two")){
+			mapTiles.get(index + this.direction).setName("Player_One");
+			mapTiles.get(index).setName("Ground_Two");
+		}
+	}
+
+
+	public void moveLeftRight(int index){
+		if (mapTiles.get(index + this.direction).getName().equals("Rock")){
+			if (mapTiles.get(index + (2 * this.direction)).getName().equals("Ground_Two")){
+				mapTiles.get(index + this.direction).setName("Player_One");
+				mapTiles.get(index + (2 * this.direction)).setName("Rock");
+				mapTiles.get(index).setName("Ground_Two");
+
+			}
+
+		}
+		else if (mapTiles.get(index).getName().equals("Ground_One") || mapTiles.get(index).getName().equals("Ground_Two")){
+			mapTiles.get(index + this.direction).setName("Player_One");
+			mapTiles.get(index).setName("Ground_Two");
+		}
+
+	}
+
 	public void orderPerform(final ControllerOrder controllerOrder) {
-		switch (controllerOrder) {
-			case English:
-				this.model.loadHelloWorld("GB");
-				break;
-			case Francais:
-				this.model.loadHelloWorld("FR");
-				break;
-			case Deutsch:
-				this.model.loadHelloWorld("DE");
-				break;
-			case Indonesia:
-				this.model.loadHelloWorld("ID");
-				break;
-			default:
-				break;
+		for (int i = 0; i <= Map.size(); i++){
+			if (Map.get(i).getName()=="Player"){
+				Direction direction;
+				switch (controllerOrder) {
+					case Up:
+						direction = Direction.Up;
+						break;
+					case Down:
+						direction = Direction.Down;
+						break;
+					case Left:
+						direction = Direction.Left;
+						break;
+					case Right:
+						direction = Direction.Right;
+						break;
+					case Nothing:
+						direction = Direction.Nothing;
+						break;
+
+					}
+				}
+			}
 		}
 	}
 
