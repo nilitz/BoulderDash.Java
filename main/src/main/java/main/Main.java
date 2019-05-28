@@ -22,7 +22,6 @@ public abstract class Main {
      * @param args
      *            the arguments
      */
-
     public static void main(final String[] args) {
         final Model model = new Model();
         final View view = new View(model);
@@ -30,6 +29,6 @@ public abstract class Main {
         view.setController(controller);
 
         controller.control();
-        controller.orderPerform(ControllerOrder.Up);
+        controller.orderPerform(ControllerOrder.English);
     }
 }
