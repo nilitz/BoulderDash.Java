@@ -25,25 +25,37 @@ public class Falling {
     }
 
 
-    public void Rock_Falling(int index){
+    public void Entity_Falling(int index){
         setContinue(0);
         while (getContinue() == 0) {
-            if (mapTiles.get(index).getName().equals("Rock")) {
+            if (mapTiles.get(index).getName().equals("Rock") || mapTiles.get(index).getName().equals("Diamond")) {
                 if (Void_Check(index,DOWN)) {
                     setIs_Falling(true);
-                    Move_Stone(index,DOWN);
+                    if (mapTiles.get(index).getName().equals("Rock")){
+                        Move_Stone(index,DOWN);}
+                    if (mapTiles.get(index).getName().equals("Diamond")){
+                        Move_Diamond(index, DOWN);
+                    }
                 }
-                else if (Entity_Check(index,DOWN).equals("Rock")) {
+                else if (Entity_Check(index,DOWN).equals("Rock") || mapTiles.get(index).getName().equals("Diamond")) {
                     if (Void_Check(index,LEFT)) {
                         if (Void_Check(index,DOWN_LEFT)) {
                             setIs_Falling(true);
-                            Move_Stone(index,DOWN_LEFT);
+                            if (mapTiles.get(index).getName().equals("Rock")){
+                            Move_Stone(index,DOWN_LEFT);}
+                            if (mapTiles.get(index).getName().equals("Diamond")){
+                                Move_Diamond(index, DOWN_LEFT);
+                            }
                         }
                     }
                     else if (Void_Check(index,RIGHT)) {
                         if (Void_Check(index,DOWN_RIGHT)) {
                             setIs_Falling(true);
-                            Move_Stone(index,DOWN_RIGHT);
+                            if (mapTiles.get(index).getName().equals("Rock")){
+                                Move_Stone(index,DOWN_RIGHT);}
+                            if (mapTiles.get(index).getName().equals("Diamond")){
+                                Move_Diamond(index, DOWN_RIGHT);
+                            }
                         }
                     }
 
@@ -53,12 +65,17 @@ public class Falling {
 
                 }
             }
+
         }
         setIs_Falling(false);
     }
 
     public void Move_Stone(int index, int direction){
         mapTiles.get(index + direction).setName("Rock");
+        mapTiles.get(index).setName("Ground_Two")
+    }
+    public void Move_Diamond(int index, int direction){
+        mapTiles.get(index + direction).setName("Diamond");
         mapTiles.get(index).setName("Ground_Two")
     }
 
@@ -77,3 +94,6 @@ public class Falling {
             return false;
         }
     }
+
+
+}
