@@ -31,31 +31,19 @@ public class Falling {
             if (mapTiles.get(index).getName().equals("Rock") || mapTiles.get(index).getName().equals("Diamond")) {
                 if (Void_Check(index,DOWN)) {
                     setIs_Falling(true);
-                    if (mapTiles.get(index).getName().equals("Rock")){
-                        Move_Stone(index,DOWN);}
-                    if (mapTiles.get(index).getName().equals("Diamond")){
-                        Move_Diamond(index, DOWN);
-                    }
+                    Move_Entity(index,DOWN,mapTiles.get(index).getName());
                 }
                 else if (Entity_Check(index,DOWN).equals("Rock") || mapTiles.get(index).getName().equals("Diamond")) {
                     if (Void_Check(index,LEFT)) {
                         if (Void_Check(index,DOWN_LEFT)) {
                             setIs_Falling(true);
-                            if (mapTiles.get(index).getName().equals("Rock")){
-                            Move_Stone(index,DOWN_LEFT);}
-                            if (mapTiles.get(index).getName().equals("Diamond")){
-                                Move_Diamond(index, DOWN_LEFT);
-                            }
+                            Move_Entity(index,DOWN_LEFT,mapTiles.get(index).getName());
                         }
                     }
                     else if (Void_Check(index,RIGHT)) {
                         if (Void_Check(index,DOWN_RIGHT)) {
                             setIs_Falling(true);
-                            if (mapTiles.get(index).getName().equals("Rock")){
-                                Move_Stone(index,DOWN_RIGHT);}
-                            if (mapTiles.get(index).getName().equals("Diamond")){
-                                Move_Diamond(index, DOWN_RIGHT);
-                            }
+                            Move_Entity(index,DOWN_RIGHT,mapTiles.get(index).getName());
                         }
                     }
 
@@ -70,20 +58,13 @@ public class Falling {
         setIs_Falling(false);
     }
 
-    public void Move_Stone(int index, int direction){
-        mapTiles.get(index + direction).setName("Rock");
-        mapTiles.get(index).setName("Ground_Two")
-    }
-    public void Move_Diamond(int index, int direction){
-        mapTiles.get(index + direction).setName("Diamond");
+
+    public void Move_Entity(int index, int direction,String entity){
+        mapTiles.get(index + direction).setName(entity);
         mapTiles.get(index).setName("Ground_Two")
     }
 
-    public String Entity_Check(int index, int direction){
-        String Entity = mapTiles.get(index + direction).getName();
 
-        return Entity;
-    }
 
 
     public boolean Void_Check (int index, int direction){
