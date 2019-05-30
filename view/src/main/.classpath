@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="/main4/java"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/contract-0.0.1-SNAPSHOT"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/target"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/main2"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>

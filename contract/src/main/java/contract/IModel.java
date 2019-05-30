@@ -1,8 +1,10 @@
 package contract;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Observable;
 
-import entity.HelloWorld;
+import entity.MapTile;
 
 /**
  * The Interface IModel.
@@ -11,20 +13,7 @@ import entity.HelloWorld;
  */
 public interface IModel {
 
-	/**
-	 * Gets the hello world.
-	 *
-	 * @return the helloworld entity
-	 */
-	HelloWorld getHelloWorld();
-
-	/**
-	 * Load the message.
-	 *
-	 * @param code
-	 *          the code
-	 */
-	void loadHelloWorld(String code);
+	ArrayList<MapTile> getMap();
 
 	/**
 	 * Gets the observable.
@@ -32,4 +21,33 @@ public interface IModel {
 	 * @return the observable
 	 */
 	Observable getObservable();
+
+	void setMap(int ID) throws SQLException;
+
+	int getID();
+
+	void setID(int ID);
+
+	int[] getSize() throws SQLException;
+
+	int getMapWidth() throws SQLException;
+
+    int getMapHeight() throws SQLException;
+
+	void loadPlayerControl(ControllerOrder controllerOrder);
+
+	void movement(String direction) throws SQLException;
+
+	void enemyAutoMove(int index) throws SQLException, InterruptedException;
+
+	void autoMove(int index) throws SQLException, InterruptedException;
+
+	boolean playerStatus();
+
+	boolean getWin();
+
+	void setWin(boolean win);
+
+	void setDiamondCounter(int diamondCounter);
+
 }

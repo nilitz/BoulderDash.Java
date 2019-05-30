@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="contract-0.0.1-SNAPSHOT">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/contract/target/contract-0.0.1-SNAPSHOT.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

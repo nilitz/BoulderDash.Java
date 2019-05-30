@@ -4,6 +4,8 @@ import java.awt.GraphicsConfiguration;
 import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -18,35 +20,37 @@ import contract.IModel;
  */
 class ViewFrame extends JFrame implements KeyListener {
 
-	/** The model. */
-	private IModel						model;
+	/**
+	 * The model.
+	 */
+	private IModel model;
 
-	/** The controller. */
-	private IController				controller;
-	/** The Constant serialVersionUID. */
-	private static final long	serialVersionUID	= -697358409737458175L;
+	/**
+	 * The controller.
+	 */
+	private IController controller;
+	/**
+	 * The Constant serialVersionUID.
+	 */
+	private static final long serialVersionUID = -697358409737458175L;
 
 	/**
 	 * Instantiates a new view frame.
 	 *
-	 * @param model
-	 *          the model
-	 * @throws HeadlessException
-	 *           the headless exception
+	 * @param model the model
+	 * @throws HeadlessException the headless exception
 	 */
-	public ViewFrame(final IModel model) throws HeadlessException {
+	public ViewFrame(final IModel model) throws HeadlessException, IOException {
 		this.buildViewFrame(model);
 	}
 
 	/**
 	 * Instantiates a new view frame.
 	 *
-	 * @param model
-	 *          the model
-	 * @param gc
-	 *          the gc
+	 * @param model the model
+	 * @param gc    the gc
 	 */
-	public ViewFrame(final IModel model, final GraphicsConfiguration gc) {
+	public ViewFrame(final IModel model, final GraphicsConfiguration gc) throws IOException {
 		super(gc);
 		this.buildViewFrame(model);
 	}
@@ -54,14 +58,11 @@ class ViewFrame extends JFrame implements KeyListener {
 	/**
 	 * Instantiates a new view frame.
 	 *
-	 * @param model
-	 *          the model
-	 * @param title
-	 *          the title
-	 * @throws HeadlessException
-	 *           the headless exception
+	 * @param model the model
+	 * @param title the title
+	 * @throws HeadlessException the headless exception
 	 */
-	public ViewFrame(final IModel model, final String title) throws HeadlessException {
+	public ViewFrame(final IModel model, final String title) throws HeadlessException, IOException {
 		super(title);
 		this.buildViewFrame(model);
 	}
@@ -69,16 +70,27 @@ class ViewFrame extends JFrame implements KeyListener {
 	/**
 	 * Instantiates a new view frame.
 	 *
-	 * @param model
-	 *          the model
-	 * @param title
-	 *          the title
-	 * @param gc
-	 *          the gc
+	 * @param model the model
+	 * @param title the title
+	 * @param gc    the gc
 	 */
-	public ViewFrame(final IModel model, final String title, final GraphicsConfiguration gc) {
+	public ViewFrame(final IModel model, final String title, final GraphicsConfiguration gc) throws IOException {
 		super(title, gc);
 		this.buildViewFrame(model);
+	}
+	/**
+	 * Builds the view frame.
+	 *
+	 * @param model the model
+	 */
+	private void buildViewFrame(final IModel model) throws IOException {
+		this.setModel(model);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.addKeyListener(this);
+		this.setContentPane(new ViewPanel(this));
+		this.setSize(1000 + this.getInsets().left + this.getInsets().right, 1000 + this.getInsets().top + this.getInsets().bottom);
+		this.setLocationRelativeTo(null);
 	}
 
 	/**
@@ -119,21 +131,6 @@ class ViewFrame extends JFrame implements KeyListener {
 		this.model = model;
 	}
 
-	/**
-	 * Builds the view frame.
-	 *
-	 * @param model
-	 *          the model
-	 */
-	private void buildViewFrame(final IModel model) {
-		this.setModel(model);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setResizable(false);
-		this.addKeyListener(this);
-		this.setContentPane(new ViewPanel(this));
-		this.setSize(400 + this.getInsets().left + this.getInsets().right, 60 + this.getInsets().top + this.getInsets().bottom);
-		this.setLocationRelativeTo(null);
-	}
 
 	/**
 	 * Prints the message.
@@ -160,9 +157,12 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
 	 */
 	public void keyPressed(final KeyEvent e) {
-		this.getController().orderPerform(View.keyCodeToControllerOrder(e.getKeyCode()));
+		try {
+			this.getController().orderPerform(View.keyCodeToControllerOrder(e.getKeyCode()));
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
-
 	/*
 	 * (non-Javadoc)
 	 *
@@ -170,5 +170,11 @@ class ViewFrame extends JFrame implements KeyListener {
 	 */
 	public void keyReleased(final KeyEvent e) {
 
+	}
+
+	public void adaptWindow() throws SQLException {
+		int[] temp = this.getModel().getSize();
+
+		this.setSize( temp[1] * 16 * 3 + this.getInsets().left + this.getInsets().right,  temp[0] * 16 * 3 + this.getInsets().top + this.getInsets().bottom);
 	}
 }

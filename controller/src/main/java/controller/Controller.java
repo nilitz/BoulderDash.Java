@@ -5,6 +5,9 @@ import contract.IController;
 import contract.IModel;
 import contract.IView;
 
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * The Class Controller.
  */
@@ -15,6 +18,7 @@ public final class Controller implements IController {
 
 	/** The model. */
 	private IModel	model;
+
 
 	/**
 	 * Instantiates a new controller.
@@ -38,9 +42,13 @@ public final class Controller implements IController {
 	 * @see contract.IController#control()
 	 */
 	public void control() {
-		this.view.printMessage("Appuyer sur les touches 'E', 'F', 'D' ou 'I', pour afficher Hello world dans la langue d votre choix.");
+		this.view.printMessage("----- Controls -----" + "\n" + "| UP : Z | DOWN : S | LEFT : Q | RIGHT : D |" + "\n" + "-----Credits -----" + "\n" + " Group 8 ");
 	}
-
+	public void death(){
+		this.view.printMessage("GAME OVER");
+	}
+	public void win(){this.view.printMessage("WINNER WINNER CHICKEN DINNER");
+	}
 	/**
      * Sets the view.
      *
@@ -61,34 +69,90 @@ public final class Controller implements IController {
 		this.model = model;
 	}
 
+	/*
+	public void start(int niveau) throws SQLException, InterruptedException {
+
+		loop(niveau);
+	}
+
+	public void loop(int niveau) throws InterruptedException, SQLException {
+		while (!this.model.playerStatus() || !this.model.getWin()){
+			for (int index = 361 - 1; index >= 0; index--){
+				this.model.autoMove(index);
+
+			}
+			this.setView(view);
+			this.orderPerform(ControllerOrder.NOTHING);
+			Thread.sleep(150);
+		}
+		if (this.model.getWin()){
+			this.model.setDiamondCounter(0);
+			this.win();
+			this.model.setID(this.model.getID() + 1);
+			this.start(this.model.getID());
+		}
+		else{
+			this.death();
+		}
+	}
+
+	public void close(){}
+
+
+	 */
+	public int autoMove() throws InterruptedException, SQLException {
+		for (int index = 361 - 1; index >= 0; index--){
+			this.model.autoMove(index);
+
+		}
+		this.setView(view);
+		Thread.sleep(150);
+
+		if(this.model.playerStatus()){
+			return 0;
+		}
+		else if(this.model.getWin()){
+			return 2;
+		}
+		else{
+			return 1;
+		}
+
+	}
+
 	/**
-     * Order perform.
-     *
-     * @param controllerOrder
-     *            the controller order
-     */
+	 * Order perform.
+	 *
+	 * @param controllerOrder
+	 *            the controller order
+	 */
 	/*
 	 * (non-Javadoc)
 	 *
 	 * @see contract.IController#orderPerform(contract.ControllerOrder)
 	 */
-	public void orderPerform(final ControllerOrder controllerOrder) {
+	public void orderPerform(final ControllerOrder controllerOrder) throws SQLException {
+
 		switch (controllerOrder) {
-			case English:
-				this.model.loadHelloWorld("GB");
+			case UP:
+				this.model.movement("UP");
 				break;
-			case Francais:
-				this.model.loadHelloWorld("FR");
+			case DOWN:
+				this.model.movement("DOWN");
 				break;
-			case Deutsch:
-				this.model.loadHelloWorld("DE");
+			case RIGHT:
+				this.model.movement("RIGHT");
 				break;
-			case Indonesia:
-				this.model.loadHelloWorld("ID");
+			case LEFT:
+				this.model.movement("LEFT");
+				break;
+			case NOTHING:
+				this.model.movement("NOTHING");
 				break;
 			default:
 				break;
 		}
+		this.setView(view);
 	}
 
 }
