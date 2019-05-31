@@ -1,9 +1,8 @@
 package contract;
-
 /**
  * The Interface IView.
  *
- * @author Jean-Aymeric Diet
+ * @author Degrossi Hugo
  */
 public interface IView {
 
