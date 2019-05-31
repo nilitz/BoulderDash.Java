@@ -107,7 +107,7 @@ public final class Controller implements IController {
 	}
 
 	/**
-	 * Control the autoMove of the enemy or the diamond
+	 * Control the autoMove of the enemy or the diamond, if the player is dead and if diamonds are collected
 	 * @return
 	 * @throws InterruptedException
 	 * @throws SQLException
