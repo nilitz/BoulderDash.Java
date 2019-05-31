@@ -161,6 +161,8 @@ class ViewFrame extends JFrame implements KeyListener {
 			this.getController().orderPerform(View.keyCodeToControllerOrder(e.getKeyCode()));
 		} catch (SQLException ex) {
 			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
 		}
 	}
 	/*

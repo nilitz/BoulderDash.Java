@@ -5,6 +5,7 @@ import entity.*;
 import entity.Object;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
+import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -37,7 +38,7 @@ public class DAOMap {
         return this.connection;
     }
 
-    public ArrayList<MapTile> getMapSql(int ID) throws SQLException {
+    public ArrayList<MapTile> getMapSql(int ID) throws SQLException, IOException {
         ArrayList<MapTile> map = new ArrayList<MapTile>();
         int i = 0;
 
@@ -85,7 +86,6 @@ public class DAOMap {
                     break;
             }
             i++;
-
         }
 
         return map;
@@ -102,6 +102,20 @@ public class DAOMap {
         resultSet.first();
         result[0] = resultSet.getInt("Height");
         result[1] = resultSet.getInt("Width");
+
+        return result;
+    }
+
+    public int getDiamondNumber(int ID) throws SQLException{
+        int result;
+
+        final String sql = "{call GetDiamond(" + ID + ")}";
+        final CallableStatement call = this.getConnection().prepareCall(sql);
+        call.execute();
+        final ResultSet resultSet = call.getResultSet();
+
+        resultSet.first();
+        result = resultSet.getInt("Diamond_Number");
 
         return result;
     }

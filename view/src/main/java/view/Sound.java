@@ -16,7 +16,7 @@ public class Sound {
     public Sound(String...files){
         musicFiles = new ArrayList<String>();
         for(String file : files)
-            musicFiles.add("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sound\\Map.wav");
+            musicFiles.add("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sound\\" + file +".wav");
     }
 
     private void playSound(String fileName) throws IOException {
@@ -28,7 +28,7 @@ public class Sound {
             Clip clip = (Clip) AudioSystem.getLine(info);
             clip.open(audioInputStream);
             FloatControl floatControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
-            floatControl.setValue(-10);
+            floatControl.setValue(-15);
             clip.start();
         }catch (Exception error){
             error.printStackTrace();

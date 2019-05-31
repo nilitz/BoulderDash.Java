@@ -1,5 +1,6 @@
 package model;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -20,19 +21,19 @@ public final class Model extends Observable implements IModel {
 	/** The Variables */
 	private ArrayList<MapTile> map;
 	private DAOMap DAO = new DAOMap(DBConnection.getInstance().getConnection());
-	private int ID = 3;
+	private int ID = 1;
 	private ControllerOrder controllerOrder;
 	private int indexPlayer;
 	private int direction;
 	private Object temporaryObject;
-	private int diamondToHave = 9;
+	private int diamondToHave = 0;
 	private int diamondCounter = 0;
 	private boolean win = false;
 
 	/**
 	 * Instantiates a new model.
 	 */
-	public Model() throws SQLException {
+	public Model() throws SQLException, IOException {
 		this.map = DAO.getMapSql(ID);
 	}
 
@@ -44,19 +45,19 @@ public final class Model extends Observable implements IModel {
 		this.map.get(arrive).setObject(map.get(depart).getObject());
 		this.map.get(depart).setObject(temp);
 	}
-	public void swapToGroundTwo(int depart, int arrive) {
+	public void swapToGroundTwo(int depart, int arrive) throws IOException {
 		Object temp = this.map.get(arrive).getObject();
 		this.map.get(arrive).setObject(map.get(depart).getObject());
 		this.map.get(depart).setObject(temp);
 		changeObjectToGroundTwo(depart);
 	}
-	public void changeObjectToGroundTwo(int index){
+	public void changeObjectToGroundTwo(int index) throws IOException {
 		if (!this.map.get(index).getObject().getName().equals("Wall_One")){
 			Ground_Two ground_two = new Ground_Two("Ground_Two", false, LastMove.NOTHING);
 			this.map.get(index).setObject(ground_two);
 		}
 	}
-	public void changeObjectToDiamond(int index){
+	public void changeObjectToDiamond(int index) throws IOException {
 		if (!this.map.get(index).getObject().getName().equals("Wall_One")){
 			Diamond diamond = new Diamond("Diamond", false, LastMove.NOTHING);
 			this.map.get(index).setObject(diamond);
@@ -83,14 +84,11 @@ public final class Model extends Observable implements IModel {
 	 * Locating Methods
 	 */
 	public boolean checkFalling(int index){
-		if (this.map.get(index).getObject().getStatus()){
-			return true;
-		}
-		return false;
+		return this.map.get(index).getObject().getStatus();
 	}
 	public void locatePlayer(){
 		for(int incr = 0; incr < map.size(); incr++){
-			if (this.map.get(incr).getObject().getName().equals("Player_One") && this.map.get(incr).getObject().getStatus() == false){
+			if (this.map.get(incr).getObject().getName().equals("Player_One") && !this.map.get(incr).getObject().getStatus()){
 				this.indexPlayer = incr;
 			}
 		}
@@ -132,7 +130,7 @@ public final class Model extends Observable implements IModel {
 	/**
 	 * Moving Player
 	 */
-	public void movement(String direction) throws SQLException {
+	public void movement(String direction) throws SQLException, IOException {
 		if (playerStatus()){direction = "NOTHING";}
 		switch (direction) {
 			case "UP":
@@ -161,7 +159,7 @@ public final class Model extends Observable implements IModel {
 		locatePlayer();
 
 	}
-	public void switchArray() throws SQLException {
+	public void switchArray() throws SQLException, IOException {
 		if (playerNextCase().equals("Rock") && this.controllerOrder != ControllerOrder.UP && this.controllerOrder != ControllerOrder.DOWN){
 			moveRock();
 		}
@@ -178,7 +176,7 @@ public final class Model extends Observable implements IModel {
 		}
 		locatePlayer();
 	}
-	public void movePlayer() throws SQLException {
+	public void movePlayer() throws SQLException, IOException {
 		locatePlayer();
 		if (playerNextCase().equals("Ground_One") || playerNextCase().equals("Diamond") || playerNextCase().equals("Ground_Two")){
 			swapToGroundTwo(this.indexPlayer, this.indexPlayer + this.direction);
@@ -188,7 +186,7 @@ public final class Model extends Observable implements IModel {
 			swapToGroundTwo(this.indexPlayer, this.indexPlayer + this.direction);
 		}
 	}
-	public boolean moveEnemy(int index, int direction){
+	public boolean moveEnemy(int index, int direction) throws IOException {
 		switch(aroundCode(index, direction)){
 			case(0):
 				swap(index, index + direction);
@@ -205,7 +203,7 @@ public final class Model extends Observable implements IModel {
 	/**
 	 * Moving Enemy
 	 */
-	public void enemyAutoMove(int index) throws SQLException, InterruptedException {
+	public void enemyAutoMove(int index) throws SQLException, InterruptedException, IOException {
 		switch((int)(Math.random() * 5)){
 			case(1):
 				moveEnemy(index, -1);
@@ -231,7 +229,7 @@ public final class Model extends Observable implements IModel {
 	/**
 	 * Moving Diamond / Rock
 	 */
-	public void autoMove(int index) throws SQLException, InterruptedException {
+	public void autoMove(int index) throws SQLException, InterruptedException, IOException {
 		if (this.map.get(index).getObject().getName().equals("Rock") || this.map.get(index).getObject().getName().equals("Diamond")){
 			if (checkFalling(index)){
 				switch(nextCase(index, getMapWidth())){
@@ -255,22 +253,15 @@ public final class Model extends Observable implements IModel {
 						break;
 				}
 			}
-			else {
-				switch(nextCase(index, getMapWidth())){
-					case "Ground_Two":
-						this.map.get(index).getObject().setStatus(true);
-						break;
-
-					default:
-						break;
-				}
+			else if("Ground_Two".equals(nextCase(index, getMapWidth()))){
+				this.map.get(index).getObject().setStatus(true);
 			}
 		}
 		else if(this.map.get(index).getObject().getName().equals("Enemy_One")){
 			enemyAutoMove(index);
 		}
 	}
-	public void diamondsTNT(int index) throws SQLException, InterruptedException {
+	public void diamondsTNT(int index) throws SQLException, InterruptedException, IOException {
 		changeObjectToDiamond(index);
 		Thread.sleep(50);
 		changeObjectToDiamond(index + 1);
@@ -289,7 +280,7 @@ public final class Model extends Observable implements IModel {
 		Thread.sleep(50);
 		changeObjectToDiamond(index + 2 * getMapWidth() + 1);
 		Thread.sleep(50);}
-	public void moveRock() throws SQLException {
+	public void moveRock() throws SQLException, IOException {
 		if (this.map.get(this.indexPlayer + 2 * this.direction).getObject().getName().equals("Ground_Two") && (this.direction == 1 || this.direction == -1) ){
 			movePlayer();
 		}
@@ -321,6 +312,7 @@ public final class Model extends Observable implements IModel {
 	public void playerDie(){}
 	public void gameWin(){
 		setWin(true);
+		setDiamondCounter(0);
 	}
 	public void collectDiamond(){
 		this.diamondCounter++;
@@ -341,39 +333,19 @@ public final class Model extends Observable implements IModel {
 		int[] temporary = getSize();
 		return temporary[0];
 	}
-	public void setID(int inte) {
-		this.ID = inte;
-	}
-	public int getID() {
-		return this.ID;
-	}
-	public int[] getSize() throws SQLException {
-		int[] result = DAO.getMapSize(this.ID);
-		return result;
-	}
-	public ArrayList<MapTile> getMap() {
-		return this.map;
-	}
-	public void setMap(int ID) throws SQLException{
-		this.map = DAO.getMapSql(ID);
-	}
-	public Observable getObservable() {
-		return this;
-	}
-	public void setControllerOrder(ControllerOrder controllerOrder) {
-		this.controllerOrder = controllerOrder;
-	}
-	public ControllerOrder getControllerOrder() {
-		return controllerOrder;
-	}
-	public void setWin(boolean win) {
-		this.win = win;
-	}
-	public boolean getWin(){
-		return this.win;
-	}
-	public void setDiamondCounter(int diamondCounter) {
-		this.diamondCounter = diamondCounter;
-	}
-
+	public void setID(int num) { this.ID = num; }
+	public int getID() { return this.ID; }
+	public int[] getSize() throws SQLException { return DAO.getMapSize(this.ID); }
+	public ArrayList<MapTile> getMap() { return this.map; }
+	public void setMap(int ID) throws SQLException, IOException { this.map = DAO.getMapSql(ID); }
+	public Observable getObservable() { return this; }
+	public void setControllerOrder(ControllerOrder controllerOrder) { this.controllerOrder = controllerOrder; }
+	public ControllerOrder getControllerOrder() { return controllerOrder; }
+	public void setWin(boolean win) { this.win = win; }
+	public boolean getWin(){ return this.win; }
+	public void setDiamondToHave(int diamondToHave) { this.diamondToHave = diamondToHave; }
+	public void setDiamondCounter(int diamondCounter) { this.diamondCounter = diamondCounter; }
+	public int getDiamondCounter() { return this.diamondCounter; }
+	public int getDiamondToHave() { return this.diamondToHave; }
+	public int getDiamondNumber(int ID) throws SQLException{ return DAO.getDiamondNumber(ID); }
 }

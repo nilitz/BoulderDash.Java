@@ -35,20 +35,12 @@ public abstract class Main {
 
         view.setController(controller);
 
-        int i = 1;
 
 
+        controller.play();
+        view.closeFrame();
 
-        controller.control();
-        //controller.loop(3);
 
-
-        while(i == 1){
-            i = controller.autoMove();
-            controller.orderPerform(ControllerOrder.NOTHING);
-            if (i == 0){controller.death();}
-            if (i == 2){controller.win();}
-        }
 
 
 

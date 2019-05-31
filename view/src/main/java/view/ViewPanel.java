@@ -1,6 +1,7 @@
 package view;
 
 import contract.IModel;
+import entity.LastMove;
 import entity.MapTile;
 import entity.Object;
 import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
@@ -35,13 +36,14 @@ class ViewPanel extends JPanel implements Observer {
 	Sound sound = new Sound("Map");
 	/** The Constant serialVersionUID. */
 	private static final long    serialVersionUID    = -998294702363713521L;
-	/** the texture pack **/
-	private String texturePack = "NES";
+	/** Loop variables **/
 	private int actualSprite = 1;
 	private final int nbSprite = 4;
-	private final int refresh = 1;
+	private final int refresh = 10;
 	private int loopCounter = 0;
 
+	Label label1 = new Label();
+	Label label2 = new Label();
 
 	/**
 	 * Instantiates a new view panel.
@@ -57,14 +59,7 @@ class ViewPanel extends JPanel implements Observer {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
 
-	public String getTexturePack() {
-		return this.texturePack;
-	}
-
-	public void setTexturePack(String string) {
-		this.texturePack = string;
 	}
 
 	/**
@@ -93,6 +88,17 @@ class ViewPanel extends JPanel implements Observer {
 	public void update(final Observable arg0, final java.lang.Object arg1)  { this.repaint(); }
 
 
+
+	public void label(){
+		label1.setBounds(450, 0, 150, 50 );
+		label2.setBounds(600, 0, 150, 50 );
+		label1.setText("REQUIRED : " + this.viewFrame.getModel().getDiamondToHave());
+		label2.setText("ACTUAL : " + this.viewFrame.getModel().getDiamondCounter());
+		label1.setFont(new Font("Roboto", 1, 10));
+		label2.setFont(new Font("Roboto", 1, 10));
+		this.viewFrame.add(label1);
+		this.viewFrame.add(label2);
+	}
 	/*
 	 * (non-Javadoc)
 	 *
@@ -100,20 +106,23 @@ class ViewPanel extends JPanel implements Observer {
 	 */
 	@Override
 	protected void paintComponent(final Graphics graphics) {
+
+		label();
+
 		graphics.clearRect(0, 0, this.getWidth(), this.getHeight());
 		ArrayList<MapTile> drawMap = this.getViewFrame().getModel().getMap();
-		BufferedImage imageTemp = null;
-		//Path path = FileSystems.getDefault().getPath("user.dir");
-		//String path = System.getProperty("user.dir");
-
-
-
 		try {
-			imageTemp = ImageIO.read(new File("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sprites\\" + this.texturePack +"\\Ground_Two\\Ground_Two.png"));
-
+			this.getViewFrame().getModel().setDiamondToHave(this.getViewFrame().getModel().getDiamondNumber(this.getViewFrame().getModel().getID()));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		Image imageTemp = null;
+		try {
+			imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/NES/Ground_Two/Ground_Two.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+
 
 		for(int i = 0; i < drawMap.size(); i++) {
 			graphics.drawImage(imageTemp, drawMap.get(i).getX() * 3, drawMap.get(i).getY() * 3, 48, 48, null);
@@ -121,24 +130,43 @@ class ViewPanel extends JPanel implements Observer {
 
 		for(int i = 0; i < drawMap.size(); i++) {
 
-			try {
-
-				if (drawMap.get(i).getObject().getName().equals("Player_One") || drawMap.get(i).getObject().getName().equals("Enemy_One")) {
-					imageTemp = ImageIO.read(new File("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sprites\\" + this.texturePack + "\\" + drawMap.get(i).getObject().getName() + "\\" + drawMap.get(i).getObject().getName() + "_"+ drawMap.get(i).getObject().getLastMove() +".png"));
-					//imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.texturePack + "/" + drawMap.get(i).getObject().getName() + "/" + drawMap.get(i).getObject().getName() + "_"+ drawMap.get(i).getObject().getLastMove() +".png"));
+			if (drawMap.get(i).getObject().getName().equals("Player_One") || drawMap.get(i).getObject().getName().equals("Enemy_One")) {
+				switch (drawMap.get(i).getObject().getLastMove()){
+					case UP:
+						imageTemp = drawMap.get(i).getObject().getImage2();
+						break;
+					case LEFT:
+						imageTemp = drawMap.get(i).getObject().getImage1();
+						break;
+					case RIGHT:
+						imageTemp = drawMap.get(i).getObject().getImage3();
+						break;
+					case NOTHING:
+					case DOWN :
+						imageTemp = drawMap.get(i).getObject().getImage4();
+						break;
 				}
-				else if(drawMap.get(i).getObject().getName().equals("Wall_One") || drawMap.get(i).getObject().getName().equals("Ground_One") || drawMap.get(i).getObject().getName().equals("Ground_Two")){
-					imageTemp = ImageIO.read(new File("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sprites\\" + this.texturePack + "\\" + drawMap.get(i).getObject().getName() + "\\" + drawMap.get(i).getObject().getName() + ".png"));
-					//imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.texturePack + "/" + drawMap.get(i).getObject().getName() + "/" + drawMap.get(i).getObject().getName() + ".png"));
-				}
-				else {
-					imageTemp = ImageIO.read(new File("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sprites\\" + this.texturePack + "\\" + drawMap.get(i).getObject().getName() + "\\" + drawMap.get(i).getObject().getName() + "_"+ this.actualSprite + ".png"));
-					//imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.texturePack + "/" + drawMap.get(i).getObject().getName() + "/" + drawMap.get(i).getObject().getName() + "_"+ this.actualSprite + ".png"));
-				}
-
-			} catch (IOException e) {
-				e.printStackTrace();
 			}
+			else if(drawMap.get(i).getObject().getName().equals("Wall_One") || drawMap.get(i).getObject().getName().equals("Ground_One") || drawMap.get(i).getObject().getName().equals("Ground_Two")){
+				imageTemp = drawMap.get(i).getObject().getImage1();
+			}
+			else {
+				switch (this.actualSprite){
+					case 1 :
+						imageTemp = drawMap.get(i).getObject().getImage1();
+						break;
+					case 2 :
+						imageTemp = drawMap.get(i).getObject().getImage2();
+						break;
+					case 3:
+						imageTemp = drawMap.get(i).getObject().getImage3();
+						break;
+					case 4:
+						imageTemp = drawMap.get(i).getObject().getImage4();
+						break;
+				}
+			}
+
 			graphics.drawImage(imageTemp, drawMap.get(i).getX() * 3, drawMap.get(i).getY() * 3, 48, 48, null);
 		}
 		if(this.refresh == this.loopCounter){
@@ -157,6 +185,7 @@ class ViewPanel extends JPanel implements Observer {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
 
 		this.repaint();
 

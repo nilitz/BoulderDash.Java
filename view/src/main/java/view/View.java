@@ -93,4 +93,8 @@ public final class View implements IView, Runnable {
 	public ViewFrame getViewFrame() {
 		return viewFrame;
 	}
+
+	public void closeFrame(){
+		this.viewFrame.dispose();
+	}
 }

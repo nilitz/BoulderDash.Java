@@ -69,41 +69,32 @@ public final class Controller implements IController {
 		this.model = model;
 	}
 
-	/*
-	public void start(int niveau) throws SQLException, InterruptedException {
 
-		loop(niveau);
-	}
-
-	public void loop(int niveau) throws InterruptedException, SQLException {
-		while (!this.model.playerStatus() || !this.model.getWin()){
-			for (int index = 361 - 1; index >= 0; index--){
-				this.model.autoMove(index);
-
+	public void play() throws InterruptedException, SQLException, IOException {
+		int i = 1;
+		control();
+		while(i == 1){
+			i = autoMoveController();
+			orderPerform(ControllerOrder.NOTHING);
+			if (i == 0){death();}
+			if (i == 2){
+				win();
+				nextLevel();
+				i = 1;
 			}
-			this.setView(view);
-			this.orderPerform(ControllerOrder.NOTHING);
-			Thread.sleep(150);
-		}
-		if (this.model.getWin()){
-			this.model.setDiamondCounter(0);
-			this.win();
-			this.model.setID(this.model.getID() + 1);
-			this.start(this.model.getID());
-		}
-		else{
-			this.death();
 		}
 	}
 
-	public void close(){}
+	public void nextLevel() throws IOException, SQLException {
+		this.model.setDiamondCounter(0);
+		this.model.setWin(false);
+		this.model.setID(this.model.getID() + 1);
+		this.model.setMap(this.model.getID());
+	}
 
-
-	 */
-	public int autoMove() throws InterruptedException, SQLException {
+	public int autoMoveController() throws InterruptedException, SQLException, IOException {
 		for (int index = 361 - 1; index >= 0; index--){
 			this.model.autoMove(index);
-
 		}
 		this.setView(view);
 		Thread.sleep(150);
@@ -131,7 +122,7 @@ public final class Controller implements IController {
 	 *
 	 * @see contract.IController#orderPerform(contract.ControllerOrder)
 	 */
-	public void orderPerform(final ControllerOrder controllerOrder) throws SQLException {
+	public void orderPerform(final ControllerOrder controllerOrder) throws SQLException, IOException {
 
 		switch (controllerOrder) {
 			case UP:
