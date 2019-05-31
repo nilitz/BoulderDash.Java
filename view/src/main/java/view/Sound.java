@@ -16,6 +16,7 @@ public class Sound {
      * ArrayList of Music file
      */
     private ArrayList<String> musicFiles;
+    /** Index of the curent song*/
     private int currentSongIndex;
 
     /**
