@@ -1,6 +1,7 @@
 package view;
 
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 
 import javax.swing.SwingUtilities;
 
@@ -12,7 +13,7 @@ import contract.IView;
 /**
  * The Class View.
  *
- * @author Jean-Aymeric Diet
+ * @author HugoDegrossi
  */
 public final class View implements IView, Runnable {
 
@@ -25,7 +26,7 @@ public final class View implements IView, Runnable {
 	 * @param model
 	 *          the model
 	 */
-	public View(final IModel model) {
+	public View(final IModel model) throws IOException {
 		this.viewFrame = new ViewFrame(model);
 		SwingUtilities.invokeLater(this);
 	}
@@ -34,10 +35,9 @@ public final class View implements IView, Runnable {
 	 * Key code to controller order.
 	 *
 	 * @param keyCode
-	 *          the key code
 	 * @return the controller order
 	 */
-	protected static ControllerOrder keyCodeToControllerOrder(final int keyCode) {
+	protected static ControllerOrder keyCodeToControllerOrder(final int keyCode){
 		switch (keyCode) {
 			case KeyEvent.VK_Z:
 				return ControllerOrder.UP;
@@ -53,18 +53,30 @@ public final class View implements IView, Runnable {
 	}
 
 	/*
+	try {
+		Thread.sleep(10) ;
+	}  catch (InterruptedException e) {
+
+		System.out.println(e);
+	}
+	*/
+
+	/*
 	 * (non-Javadoc)
 	 *
 	 * @see contract.IView#printMessage(java.lang.String)
+	 */
+
+	/**
+	 * Print the message
+	 * @param message
 	 */
 	public void printMessage(final String message) {
 		this.viewFrame.printMessage(message);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see java.lang.Runnable#run()
+	/**
+	 * Set the frame visible
 	 */
 	public void run() {
 		this.viewFrame.setVisible(true);
@@ -78,5 +90,20 @@ public final class View implements IView, Runnable {
 	 */
 	public void setController(final IController controller) {
 		this.viewFrame.setController(controller);
+	}
+
+	/**
+	 * Getter ViewFrame
+	 * @return viewFrame
+	 */
+	public ViewFrame getViewFrame() {
+		return viewFrame;
+	}
+
+	/**
+	 * Closing the Frame.
+	 */
+	public void closeFrame(){
+		this.viewFrame.dispose();
 	}
 }
