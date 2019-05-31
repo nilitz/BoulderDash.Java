@@ -1,22 +1,24 @@
 package contract;
 
+import java.sql.SQLException;
+
 /**
  * The Interface IController.
  *
- * @author Jean-Aymeric Diet
+ * @author Hugo Degrossi
  */
 public interface IController {
 
 	/**
-	 * Control.
+	 *  Control.
 	 */
 	public void control();
 
 	/**
-	 * Order perform.
+	 * Perfom the order gotten from user.
 	 *
 	 * @param controllerOrder
 	 *          the controller order
 	 */
-	public void orderPerform(ControllerOrder controllerOrder);
+	public void orderPerform(ControllerOrder controllerOrder) throws SQLException;
 }
