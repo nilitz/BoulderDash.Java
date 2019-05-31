@@ -88,15 +88,20 @@ public final class Controller implements IController {
 	public void nextLevel() throws IOException, SQLException {
 		this.model.setDiamondCounter(0);
 		this.model.setWin(false);
-		this.model.setID(this.model.getID() + 1);
+		if (this.model.getID() < 5){
+			this.model.setID(this.model.getID() + 1);
+		}else {
+			this.model.setID(1);
+		}
 		this.model.setMap(this.model.getID());
 	}
 
 	public int autoMoveController() throws InterruptedException, SQLException, IOException {
-		for (int index = 361 - 1; index >= 0; index--){
+		for (int index = (this.model.getMapWidth() * this.model.getMapHeight()) - 1; index >= 0; index--){
 			this.model.autoMove(index);
+			this.model.enemyAutoMove(index);
 		}
-		this.setView(view);
+
 		Thread.sleep(150);
 
 		if(this.model.playerStatus()){
@@ -108,7 +113,6 @@ public final class Controller implements IController {
 		else{
 			return 1;
 		}
-
 	}
 
 	/**

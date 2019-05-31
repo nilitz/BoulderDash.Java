@@ -31,14 +31,4 @@ public class ModelTest {
     public void tearDown() throws Exception {
     }
 
-    @Test
-    public void testGetMessage() {
-    }
-
-    /**
-     * Test method for {@link model.Model#loadHelloWorld(java.lang.String)}.
-     */
-    @Test
-    public void testGetMessageString() {
-    }
 }

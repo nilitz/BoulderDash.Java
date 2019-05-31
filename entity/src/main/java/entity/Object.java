@@ -12,14 +12,17 @@ public abstract class Object {
     private Image image2;
     private Image image3;
     private Image image4;
+    private int lastIndex;
+    private String texturePack = "NES2";
 
 
 
-    public Object(String name, boolean status, LastMove lastMove) throws IOException {
+    public Object(String name, boolean status, LastMove lastMove, int lastIndex) throws IOException {
         this.setName(name);
         this.setStatus(status);
         this.setLastMove(lastMove);
         loadImage();
+        this.setLastIndex(lastIndex);
     }
 
 
@@ -79,6 +82,17 @@ public abstract class Object {
         return image4;
     }
 
-    public void loadImage() throws IOException {
+    public void loadImage() throws IOException { }
+
+    public void setLastIndex(int lastIndex) {
+        this.lastIndex = lastIndex;
+    }
+
+    public int getLastIndex() {
+        return lastIndex;
+    }
+
+    public String getTexturePack() {
+        return texturePack;
     }
 }

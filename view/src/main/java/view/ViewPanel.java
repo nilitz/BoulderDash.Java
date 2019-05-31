@@ -39,11 +39,12 @@ class ViewPanel extends JPanel implements Observer {
 	/** Loop variables **/
 	private int actualSprite = 1;
 	private final int nbSprite = 4;
-	private final int refresh = 10;
+	private final int refresh = 8;
 	private int loopCounter = 0;
 
 	Label label1 = new Label();
-	Label label2 = new Label();
+
+	Object object;
 
 	/**
 	 * Instantiates a new view panel.
@@ -51,14 +52,10 @@ class ViewPanel extends JPanel implements Observer {
 	 * @param viewFrame
 	 *          the view frame
 	 */
-	public ViewPanel(final ViewFrame viewFrame) throws IOException {
+	public ViewPanel(final ViewFrame viewFrame){
 		this.setViewFrame(viewFrame);
 		viewFrame.getModel().getObservable().addObserver(this);
-		try {
-			sound.run();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
 
 	}
 
@@ -77,7 +74,13 @@ class ViewPanel extends JPanel implements Observer {
 	 *          the new view frame
 	 */
 	private void setViewFrame(final ViewFrame viewFrame) {
+
 		this.viewFrame = viewFrame;
+		try {
+			sound.run();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/*
@@ -90,14 +93,11 @@ class ViewPanel extends JPanel implements Observer {
 
 
 	public void label(){
-		label1.setBounds(450, 0, 150, 50 );
-		label2.setBounds(600, 0, 150, 50 );
-		label1.setText("REQUIRED : " + this.viewFrame.getModel().getDiamondToHave());
-		label2.setText("ACTUAL : " + this.viewFrame.getModel().getDiamondCounter());
-		label1.setFont(new Font("Roboto", 1, 10));
-		label2.setFont(new Font("Roboto", 1, 10));
+		this.label1.setBounds(10, 10, 300, 25 );
+		this.label1.setText("REQUIRED : " + this.viewFrame.getModel().getDiamondToHave() + "       |     ACTUAL : " + this.viewFrame.getModel().getDiamondCounter()	);
+		this.label1.setFont(new Font("Roboto", Font.CENTER_BASELINE, 16));
+		this.label1.setAlignment(Label.CENTER);
 		this.viewFrame.add(label1);
-		this.viewFrame.add(label2);
 	}
 	/*
 	 * (non-Javadoc)
@@ -118,7 +118,7 @@ class ViewPanel extends JPanel implements Observer {
 		}
 		Image imageTemp = null;
 		try {
-			imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/NES/Ground_Two/Ground_Two.png"));
+			imageTemp = ImageIO.read(getClass().getClassLoader().getResource("./sprites/NES2/Ground_Two/Ground_Two.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

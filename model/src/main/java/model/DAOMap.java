@@ -50,35 +50,35 @@ public class DAOMap {
         while (resultSet.next()){
             switch(resultSet.getString("components.NAME")){
                 case "Player_One":
-                    MapTile player_one = new MapTile(new Player_One("Player_One", false, LastMove.DOWN) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile player_one = new MapTile(new Player_One("Player_One", false, LastMove.DOWN, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, player_one);
                     break;
                 case "Enemy_One":
-                    MapTile enemy_one = new MapTile(new Enemy_One("Enemy_One", false, LastMove.DOWN) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile enemy_one = new MapTile(new Enemy_One("Enemy_One", false, LastMove.DOWN, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, enemy_one);
                     break;
                 case "Ground_One":
-                    MapTile ground_one = new MapTile(new Ground_One("Ground_One", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile ground_one = new MapTile(new Ground_One("Ground_One", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, ground_one);
                     break;
                 case "Ground_Two":
-                    MapTile ground_two = new MapTile(new Ground_Two("Ground_Two", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile ground_two = new MapTile(new Ground_Two("Ground_Two", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, ground_two);
                     break;
                 case "Wall_One":
-                    MapTile wall_one = new MapTile(new Wall_One("Wall_One", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile wall_one = new MapTile(new Wall_One("Wall_One", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, wall_one);
                     break;
                 case "Wall_Two":
-                    MapTile wall_two = new MapTile(new Wall_Two("Wall_Two", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile wall_two = new MapTile(new Wall_Two("Wall_Two", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, wall_two);
                     break;
                 case "Rock":
-                    MapTile rock = new MapTile(new Rock("Rock", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile rock = new MapTile(new Rock("Rock", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, rock);
                     break;
                 case "Diamond":
-                    MapTile diamond = new MapTile(new Diamond("Diamond", false, LastMove.NOTHING) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
+                    MapTile diamond = new MapTile(new Diamond("Diamond", false, LastMove.NOTHING, -1) ,resultSet.getInt("positions.PosX"),resultSet.getInt("positions.PosY"));
                     map.add(i, diamond);
                     break;
                 default:
