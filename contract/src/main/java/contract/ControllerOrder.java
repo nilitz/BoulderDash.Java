@@ -3,8 +3,18 @@ package contract;
 /**
  * The Enum ControllerOrder.
  *
- * @author Jean-Aymeric Diet
+ * @author Degrossit Hugo
  */
 public enum ControllerOrder {
-	UP, RIGHT, DOWN, LEFT, NOTHING
+
+	/** Going UP */
+	UP,
+	/** Going LEFT */
+	LEFT,
+	/** Going RIGHT */
+	RIGHT,
+	/** Going DOWN */
+	DOWN,
+	/** Going NOTHING */
+	NOTHING
 }
