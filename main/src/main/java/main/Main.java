@@ -9,27 +9,41 @@ import controller.Controller;
 import model.Model;
 import view.View;
 
+import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.sql.SQLException;
+
 /**
  * The Class Main.
  *
- * @author Jean-Aymeric Diet
+ * @author HugoDegrossi
  */
 public abstract class Main {
 
     /**
-     * The main method.
-     *
+     * The main methods which runs the whole program
      * @param args
-     *            the arguments
+     * @throws SQLException
+     * @throws IOException
+     * @throws InterruptedException
      */
-
-    public static void main(final String[] args) {
+    public static void main(final String[] args) throws SQLException, IOException, InterruptedException {
         final Model model = new Model();
         final View view = new View(model);
         final Controller controller = new Controller(view, model);
+
+
         view.setController(controller);
 
-        controller.control();
-        controller.orderPerform(ControllerOrder.English);
+
+
+        controller.play();
+        view.closeFrame();
+
+
+
+
+
     }
 }
