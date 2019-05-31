@@ -1,85 +1,105 @@
 package view;
 
+import java.awt.GraphicsConfiguration;
+import java.awt.HeadlessException;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.sql.SQLException;
 
-import javax.swing.SwingUtilities;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
-import contract.ControllerOrder;
 import contract.IController;
 import contract.IModel;
-import contract.IView;
 
 /**
- * The Class View.
+ * The Class ViewFrame.
  *
  * @author HugoDegrossi
  */
-public final class View implements IView, Runnable {
-
-	/** The frame. */
-	private final ViewFrame viewFrame;
+class ViewFrame extends JFrame implements KeyListener {
 
 	/**
-	 * Instantiates a new view.
+	 * The model.
+	 */
+	private IModel model;
+
+	/**
+	 * The controller.
+	 */
+	private IController controller;
+	/**
+	 * The Constant serialVersionUID.
+	 */
+	private static final long serialVersionUID = -697358409737458175L;
+
+	/**
+	 * Instantiates a new view frame.
 	 *
-	 * @param model
-	 *          the model
+	 * @param model the model
+	 * @throws HeadlessException the headless exception
 	 */
-	public View(final IModel model) throws IOException {
-		this.viewFrame = new ViewFrame(model);
-		SwingUtilities.invokeLater(this);
+	public ViewFrame(final IModel model) throws HeadlessException, IOException {
+		this.buildViewFrame(model);
 	}
 
 	/**
-	 * Key code to controller order.
+	 * Instantiates a new view frame.
 	 *
-	 * @param keyCode
-	 * @return the controller order
+	 * @param model the model
+	 * @param gc    the gc
 	 */
-	protected static ControllerOrder keyCodeToControllerOrder(final int keyCode){
-		switch (keyCode) {
-			case KeyEvent.VK_Z:
-				return ControllerOrder.UP;
-			case KeyEvent.VK_Q:
-				return ControllerOrder.LEFT;
-			case KeyEvent.VK_S:
-				return ControllerOrder.DOWN;
-			case KeyEvent.VK_D:
-				return ControllerOrder.RIGHT;
-			default:
-				return ControllerOrder.NOTHING;
-		}
+	public ViewFrame(final IModel model, final GraphicsConfiguration gc) throws IOException {
+		super(gc);
+		this.buildViewFrame(model);
 	}
 
-	/*
-	try {
-		Thread.sleep(10) ;
-	}  catch (InterruptedException e) {
-
-		System.out.println(e);
-	}
-	*/
-
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Instantiates a new view frame.
 	 *
-	 * @see contract.IView#printMessage(java.lang.String)
+	 * @param model the model
+	 * @param title the title
+	 * @throws HeadlessException the headless exception
 	 */
-
-	/**
-	 * Print the message
-	 * @param message
-	 */
-	public void printMessage(final String message) {
-		this.viewFrame.printMessage(message);
+	public ViewFrame(final IModel model, final String title) throws HeadlessException, IOException {
+		super(title);
+		this.buildViewFrame(model);
 	}
 
 	/**
-	 * Set the frame visible
+	 * Instantiates a new view frame.
+	 *
+	 * @param model the model
+	 * @param title the title
+	 * @param gc    the gc
 	 */
-	public void run() {
-		this.viewFrame.setVisible(true);
+	public ViewFrame(final IModel model, final String title, final GraphicsConfiguration gc) throws IOException {
+		super(title, gc);
+		this.buildViewFrame(model);
+	}
+	/**
+	 * Builds the view frame.
+	 *
+	 * @param model the model
+	 */
+	private void buildViewFrame(final IModel model) throws IOException {
+		this.setModel(model);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.addKeyListener(this);
+		this.setContentPane(new ViewPanel(this));
+		this.setSize(1000 + this.getInsets().left + this.getInsets().right, 1000 + this.getInsets().top + this.getInsets().bottom);
+		this.setLocationRelativeTo(null);
+	}
+
+	/**
+	 * Gets the controller.
+	 *
+	 * @return the controller
+	 */
+	private IController getController() {
+		return this.controller;
 	}
 
 	/**
@@ -88,22 +108,79 @@ public final class View implements IView, Runnable {
 	 * @param controller
 	 *          the new controller
 	 */
-	public void setController(final IController controller) {
-		this.viewFrame.setController(controller);
+	protected void setController(final IController controller) {
+		this.controller = controller;
 	}
 
 	/**
-	 * Getter ViewFrame
-	 * @return viewFrame
+	 * Gets the model.
+	 *
+	 * @return the model
 	 */
-	public ViewFrame getViewFrame() {
-		return viewFrame;
+	protected IModel getModel() {
+		return this.model;
 	}
 
 	/**
-	 * Closing the Frame.
+	 * Sets the model.
+	 *
+	 * @param model
+	 *          the new model
 	 */
-	public void closeFrame(){
-		this.viewFrame.dispose();
+	private void setModel(final IModel model) {
+		this.model = model;
+	}
+
+
+	/**
+	 * Prints the message.
+	 *
+	 * @param message
+	 *          the message
+	 */
+	public void printMessage(final String message) {
+		JOptionPane.showMessageDialog(null, message);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
+	 */
+	public void keyTyped(final KeyEvent e) {
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
+	 */
+	public void keyPressed(final KeyEvent e) {
+		try {
+			this.getController().orderPerform(View.keyCodeToControllerOrder(e.getKeyCode()));
+		} catch (SQLException ex) {
+			ex.printStackTrace();
+		} catch (IOException ex) {
+			ex.printStackTrace();
+		}
+	}
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
+	 */
+	public void keyReleased(final KeyEvent e) {
+
+	}
+
+	/**
+	 * Adapt the window to your screen
+	 * @throws SQLException
+	 */
+	public void adaptWindow() throws SQLException {
+		int[] temp = this.getModel().getSize();
+
+		this.setSize( temp[1] * 16 * 3 + this.getInsets().left + this.getInsets().right,  temp[0] * 16 * 3 + this.getInsets().top + this.getInsets().bottom);
 	}
 }
