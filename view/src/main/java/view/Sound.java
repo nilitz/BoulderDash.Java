@@ -1,25 +1,38 @@
 package view;
-import sun.audio.*;
 
 import javax.sound.sampled.*;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * The Class Sound
+ *
+ * @author De Grossi Hugo
+ */
 public class Sound {
 
+    /* The ArrayList musicFiles (contains path to music)**/
     private ArrayList<String> musicFiles;
-    private int currentSongIndex;
 
+    /**
+     * The constructor Sound
+     *
+     * @param files
+     * Take an undefined amount of files in parameter
+     */
     public Sound(String...files){
         musicFiles = new ArrayList<String>();
         for(String file : files)
             musicFiles.add("C:\\Users\\hugod\\Documents\\JPU-BlankProject\\view\\src\\main\\resources\\sound\\" + file +".wav");
     }
 
-    private void playSound(String fileName) throws IOException {
+    /**
+     * Play the sound in the ArrayList
+     *
+     * @param fileName
+     * The filename
+     */
+    private void playSound(String fileName) {
         try {
             File soundFile = new File(fileName);
             AudioInputStream audioInputStream = AudioSystem.getAudioInputStream(soundFile);
@@ -35,7 +48,10 @@ public class Sound {
         }
     }
 
-    public void run() throws IOException {
-        playSound(musicFiles.get(currentSongIndex));
+    /**
+     * Run the sound
+     */
+    public void run() {
+        playSound(musicFiles.get(0));
     }
 }

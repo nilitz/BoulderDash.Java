@@ -11,21 +11,23 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
+/**
+ * The Class DAOMap.
+ *
+ * @author De Grossi Hugo
+ */
 public class DAOMap {
 
     /** The connection. */
     private final Connection connection;
 
     /**
-     * Instantiates a new DAO hello world.
+     * Instantiates a new DAOMap.
      *
      * @param connection
-     *          the connection
-     * @throws SQLException
-     *           the SQL exception
+     * the connection
      */
-    public DAOMap(Connection connection)  throws SQLException {
+    public DAOMap(Connection connection) {
         this.connection = connection;
     }
 
@@ -38,6 +40,17 @@ public class DAOMap {
         return this.connection;
     }
 
+    /**
+     * Set the map in the ArrayList from the DataBase
+     * @param ID
+     * ID of the Map
+     * @return
+     * return the ArrayList of MapTile
+     * @throws SQLException
+     * throws sql related exception
+     * @throws IOException
+     * throws image related exception
+     */
     public ArrayList<MapTile> getMapSql(int ID) throws SQLException, IOException {
         ArrayList<MapTile> map = new ArrayList<MapTile>();
         int i = 0;
@@ -91,6 +104,15 @@ public class DAOMap {
         return map;
     }
 
+    /**
+     * Set the size of the map from the DataBase
+     * @param ID
+     * ID of the Map
+     * @return
+     * return the size of the map
+     * @throws SQLException
+     * throws sql related exception
+     */
     public int[] getMapSize(int ID) throws SQLException {
         int[] result = new int[2];
 
@@ -106,6 +128,15 @@ public class DAOMap {
         return result;
     }
 
+    /**
+     * Set the Diamond number from the DataBase
+     * @param ID
+     * ID of the Map
+     * @return
+     * return the number of diamonds in the map
+     * @throws SQLException
+     * throws sql related exception
+     */
     public int getDiamondNumber(int ID) throws SQLException{
         int result;
 

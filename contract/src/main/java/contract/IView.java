@@ -1,18 +1,24 @@
 package contract;
+
+import java.awt.*;
+
 /**
  * The Interface IView.
  *
- * @author Jean-Aymeric Diet
+ * @author De Grossi Hugo
  */
 public interface IView {
 
 	/**
 	 * Prints the message.
-	 *
 	 * @param message
-	 *          the message
+	 * the message to print
 	 */
 	void printMessage(final String message);
 
+	/**
+	 * Close the frame and end the program
+	 */
 	void closeFrame();
+
 }

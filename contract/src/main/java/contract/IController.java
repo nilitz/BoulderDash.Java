@@ -6,20 +6,23 @@ import java.sql.SQLException;
 /**
  * The Interface IController.
  *
- * @author Jean-Aymeric Diet
+ * @author De Grossi Hugo
  */
 public interface IController {
 
 	/**
-	 * Control.
+	 * Print a control message at the start
 	 */
-	public void control();
+	void control();
 
 	/**
-	 * Order perform.
-	 *
+	 * launch model method according to the player entries
 	 * @param controllerOrder
-	 *          the controller order
+	 * the controller order
+	 * @throws SQLException
+	 * throws sql related exception
+	 * @throws IOException
+	 * throws image related exception
 	 */
-	public void orderPerform(ControllerOrder controllerOrder) throws SQLException, IOException;
+	void orderPerform(ControllerOrder controllerOrder) throws SQLException, IOException;
 }

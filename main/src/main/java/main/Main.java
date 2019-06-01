@@ -1,31 +1,34 @@
 /**
- * @author Jean-Aymeric DIET jadiet@cesi.fr
- * @version 1.0
+ * @author De Grossi Hugo & Geraldi Guillaume
+ * @version 1.4
  */
 package main;
 
-import contract.ControllerOrder;
 import controller.Controller;
 import model.Model;
 import view.View;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.IOException;
 import java.sql.SQLException;
 
 /**
  * The Class Main.
  *
- * @author Jean-Aymeric Diet
+ * @author De Grossi Hugo
  */
 public abstract class Main {
 
+
     /**
-     * The main method.
-     *
+     * MAIN
      * @param args
-     *            the arguments
+     * the main method
+     * @throws SQLException
+     * throws sql related exception
+     * @throws IOException
+     * throws image related exception
+     * @throws InterruptedException
+     * throws thread related exception
      */
     public static void main(final String[] args) throws SQLException, IOException, InterruptedException {
         final Model model = new Model();
@@ -34,7 +37,7 @@ public abstract class Main {
         view.setController(controller);
 
         controller.play();
-
+        Thread.sleep(1000);
         view.closeFrame();
     }
 }

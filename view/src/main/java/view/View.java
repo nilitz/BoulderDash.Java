@@ -1,5 +1,6 @@
 package view;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
@@ -13,7 +14,7 @@ import contract.IView;
 /**
  * The Class View.
  *
- * @author Jean-Aymeric Diet
+ * @author Geraldi Guillaume And De Grossi Hugo
  */
 public final class View implements IView, Runnable {
 
@@ -22,9 +23,10 @@ public final class View implements IView, Runnable {
 
 	/**
 	 * Instantiates a new view.
-	 *
 	 * @param model
-	 *          the model
+	 * the model
+	 * @throws IOException
+	 * throws image related exception
 	 */
 	public View(final IModel model) throws IOException {
 		this.viewFrame = new ViewFrame(model);
@@ -53,14 +55,8 @@ public final class View implements IView, Runnable {
 		}
 	}
 
-	/*
-	try {
-		Thread.sleep(10) ;
-	}  catch (InterruptedException e) {
 
-		System.out.println(e);
-	}
-	*/
+
 
 	/*
 	 * (non-Javadoc)
@@ -84,7 +80,7 @@ public final class View implements IView, Runnable {
 	 * Sets the controller.
 	 *
 	 * @param controller
-	 *          the new controller
+	 * the new controller
 	 */
 	public void setController(final IController controller) {
 		this.viewFrame.setController(controller);

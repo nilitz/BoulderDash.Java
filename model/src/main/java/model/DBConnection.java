@@ -7,14 +7,14 @@ import java.sql.SQLException;
 /**
  * The Class DBConnection.
  *
- * @author Jean-Aymeric Diet
+ * @author De Grossi Hugo
  */
 final class DBConnection {
 	/** The instance. */
-	private static DBConnection	INSTANCE	= null;
+	private static DBConnection	INSTANCE = null;
 
 	/** The connection. */
-	private Connection					connection;
+	private Connection connection;
 
 	/**
 	 * Instantiates a new DB connection.

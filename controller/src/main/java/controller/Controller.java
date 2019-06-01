@@ -24,36 +24,27 @@ public final class Controller implements IController {
 	 * Instantiates a new controller.
 	 *
 	 * @param view
-	 *          the view
+	 *  the view
 	 * @param model
-	 *          the model
+	 *  the model
 	 */
 	public Controller(final IView view, final IModel model) {
 		this.setView(view);
 		this.setModel(model);
 	}
 
+
 	/**
-     * Control.
-     */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see contract.IController#control()
+	 * Print a control message at the start
 	 */
 	public void control() {
 		this.view.printMessage("----- Controls -----" + "\n" + "| UP : Z | DOWN : S | LEFT : Q | RIGHT : D |" + "\n" + "-----Credits -----" + "\n" + " Group 8 ");
 	}
-	public void death(){
-		this.view.printMessage("GAME OVER");
-	}
-	public void win(){this.view.printMessage("WINNER WINNER CHICKEN DINNER");
-	}
+
 	/**
      * Sets the view.
-     *
      * @param pview
-     *            the new view
+     * the new view
      */
 	private void setView(final IView pview) {
 		this.view = pview;
@@ -63,40 +54,72 @@ public final class Controller implements IController {
 	 * Sets the model.
 	 *
 	 * @param model
-	 *          the new model
+	 * the new model
 	 */
 	private void setModel(final IModel model) {
 		this.model = model;
 	}
 
 
+	/**
+	 * Play method, used in the main to start the game
+	 * @throws SQLException
+	 * throws sql related exception
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws InterruptedException
+	 * throws thread related exception
+	 */
 	public void play() throws InterruptedException, SQLException, IOException {
 		int i = 1;
 		control();
 		while(i == 1){
 			i = autoMoveController();
 			orderPerform(ControllerOrder.NOTHING);
-			if (i == 0){death();}
+			if(i == 1){
+			}
 			if (i == 2){
-				win();
 				nextLevel();
 				i = 1;
 			}
 		}
 	}
 
-	public void nextLevel() throws IOException, SQLException {
-		this.model.setDiamondCounter(0);
-		this.model.setWin(false);
+	/**
+	 * used to change the level when the actual level is finished
+	 * @throws SQLException
+	 * throws sql related exception
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws InterruptedException
+	 * throws thread related exception
+	 */
+	private void nextLevel() throws IOException, SQLException, InterruptedException {
+		this.model.setMoveable(false);
+		Thread.sleep(1000);
 		if (this.model.getID() < 5){
 			this.model.setID(this.model.getID() + 1);
 		}else {
 			this.model.setID(1);
 		}
+		this.model.setDiamondCounter(0);
+		this.model.setWin(false);
 		this.model.setMap(this.model.getID());
+		this.model.setMoveable(true);
 	}
 
-	public int autoMoveController() throws InterruptedException, SQLException, IOException {
+	/**
+	 * auto move the enemy and the rocks / diamonds
+	 * @return
+	 * return a different "int" value if : thep player is dead / the player win / none of the two
+	 * @throws SQLException
+	 * throws sql related exception
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws InterruptedException
+	 * throws thread related exception
+	 */
+	private int autoMoveController() throws InterruptedException, SQLException, IOException {
 		for (int index = (this.model.getMapWidth() * this.model.getMapHeight()) - 1; index >= 0; index--){
 			this.model.autoMove(index);
 			this.model.enemyAutoMove(index);
@@ -115,16 +138,15 @@ public final class Controller implements IController {
 		}
 	}
 
+
 	/**
-	 * Order perform.
-	 *
+	 * launch model method according to the player entries
 	 * @param controllerOrder
-	 *            the controller order
-	 */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see contract.IController#orderPerform(contract.ControllerOrder)
+	 * the controller order
+	 * @throws SQLException
+	 * throws sql related exception
+	 * @throws IOException
+	 * throws image related exception
 	 */
 	public void orderPerform(final ControllerOrder controllerOrder) throws SQLException, IOException {
 
