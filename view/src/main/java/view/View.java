@@ -37,7 +37,7 @@ public final class View implements IView, Runnable {
 	 * Key code to controller order.
 	 *
 	 * @param keyCode
-	 *          the key code
+	 * the key code
 	 * @return the controller order
 	 */
 	protected static ControllerOrder keyCodeToControllerOrder(final int keyCode){

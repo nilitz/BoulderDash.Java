@@ -102,16 +102,17 @@ public final class Controller implements IController {
 		}else {
 			this.model.setID(1);
 		}
+
+		this.model.setMap(this.model.getID());
 		this.model.setDiamondCounter(0);
 		this.model.setWin(false);
-		this.model.setMap(this.model.getID());
 		this.model.setMoveable(true);
 	}
 
 	/**
 	 * auto move the enemy and the rocks / diamonds
 	 * @return
-	 * return a different "int" value if : thep player is dead / the player win / none of the two
+	 * return a different "int" value if : the player is dead / the player win / none of the two
 	 * @throws SQLException
 	 * throws sql related exception
 	 * @throws IOException
@@ -122,7 +123,6 @@ public final class Controller implements IController {
 	private int autoMoveController() throws InterruptedException, SQLException, IOException {
 		for (int index = (this.model.getMapWidth() * this.model.getMapHeight()) - 1; index >= 0; index--){
 			this.model.autoMove(index);
-			this.model.enemyAutoMove(index);
 		}
 
 		Thread.sleep(150);
