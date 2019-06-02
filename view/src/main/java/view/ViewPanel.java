@@ -22,8 +22,6 @@ class ViewPanel extends JPanel implements Observer {
 
 	/** The view frame. */
 	private ViewFrame viewFrame;
-	/** The Sound. */
-	Sound sound = new Sound("Map");
 	/** The Constant serialVersionUID. */
 	private static final long    serialVersionUID    = -998294702363713521L;
 	/** actual sprite number **/
@@ -69,7 +67,6 @@ class ViewPanel extends JPanel implements Observer {
 	 */
 	private void setViewFrame(final ViewFrame viewFrame) {
 		this.viewFrame = viewFrame;
-		sound.run();
 	}
 
 	/*

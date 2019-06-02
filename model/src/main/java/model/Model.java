@@ -393,6 +393,8 @@ public final class Model extends Observable implements IModel {
 	}
 
 
+
+
 	/**
 	 * Enemy AI (MOVING) | Check Every Moving Case according to the last move
 	 * @param index
@@ -403,49 +405,23 @@ public final class Model extends Observable implements IModel {
 	 * throws image related exception
 	 */
 	public void enemyAutoMove(int index) throws SQLException, IOException {
-		if (this.map.get(index).getObject().getName().equals("Enemy_One")){
-			if(this.map.get(index).getObject().getLastIndex() != index){
-				switch (this.map.get(index).getObject().getLastMove()){
-					case RIGHT:
-						if(!moveEnemyRight(index)){
-							if(!moveEnemyDown(index)){
-								if(!moveEnemyLeft(index)){
-									moveEnemyUp(index);
-								}
-							}
-						}
-						break;
-					case LEFT:
-						if(!moveEnemyLeft(index)){
-							if(!moveEnemyUp(index)){
-								if(!moveEnemyRight(index)){
-									moveEnemyDown(index);
-								}
-							}
-						}
-						break;
-					case UP:
-						if(!moveEnemyUp(index)){
-							if(!moveEnemyRight(index)){
-								if(!moveEnemyDown(index)){
-									moveEnemyLeft(index);
-								}
-							}
-						}
-						break;
-					case DOWN:
-						if(!moveEnemyDown(index)){
-							if(!moveEnemyLeft(index)){
-								if(!moveEnemyUp(index)){
-									moveEnemyRight(index);
-								}
-							}
-						}
-						break;
-				}
-			} else {
-				this.map.get(index).getObject().setLastIndex(-1);
+		if(this.map.get(index).getObject().getLastIndex() != index){
+			switch (this.map.get(index).getObject().getLastMove()){
+				case RIGHT:
+					moveEnemyLastMoveRight(index);
+					break;
+				case LEFT:
+					moveEnemyLastMoveLeft(index);
+					break;
+				case UP:
+					moveEnemyLastMoveUp(index);
+					break;
+				case DOWN:
+					moveEnemyLastMoveDown(index);
+					break;
 			}
+		} else {
+			this.map.get(index).getObject().setLastIndex(-1);
 		}
 	}
 
@@ -462,7 +438,7 @@ public final class Model extends Observable implements IModel {
 	 * throws image related exception
 	 */
 	public void autoMove(int index) throws SQLException, InterruptedException, IOException {
-		if (this.map.get(index).getObject().getName().equals("Rock") || this.map.get(index).getObject().getName().equals("Diamond")){
+		if (nextCase(index, 0).equals("Rock") || nextCase(index, 0).equals("Diamond")){
 			if (checkFalling(index)){
 				switch(nextCase(index, getMapWidth())){
 					case "Ground_Two":
@@ -488,6 +464,8 @@ public final class Model extends Observable implements IModel {
 			else if("Ground_Two".equals(nextCase(index, getMapWidth()))){
 				this.map.get(index).getObject().setStatus(true);
 			}
+		} else if(nextCase(index, 0).equals("Enemy_One")){
+			enemyAutoMove(index);
 		}
 	}
 
@@ -530,7 +508,7 @@ public final class Model extends Observable implements IModel {
 	 * throws image related exception
 	 */
 	public void moveRock() throws SQLException, IOException {
-		if (this.map.get(this.indexPlayer + 2 * this.direction).getObject().getName().equals("Ground_Two") && (this.direction == 1 || this.direction == -1) ){
+		if (nextCase(this.indexPlayer + 2 * this.direction, 0).equals("Ground_Two") && (this.direction == 1 || this.direction == -1) ){
 			movePlayer();
 		}
 	}
@@ -585,6 +563,82 @@ public final class Model extends Observable implements IModel {
 	public void loadPlayerControl(final ControllerOrder controllerOrder){
 		this.setControllerOrder(controllerOrder);
 	}
+
+	/**
+	 * move the enemy if his last move is on the right
+	 * @param index
+	 * index of the enemy position in ArrayList
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws SQLException
+	 * throws sql related exception
+	 */
+	public void moveEnemyLastMoveRight(int index) throws IOException, SQLException {
+		if(!moveEnemyRight(index)){
+			if(!moveEnemyDown(index)){
+				if(!moveEnemyLeft(index)){
+					moveEnemyUp(index);
+				}
+			}
+		}
+	}
+	/**
+	 * move the enemy if his last move is on the left
+	 * @param index
+	 * index of the enemy position in ArrayList
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws SQLException
+	 * throws sql related exception
+	 */
+	public void moveEnemyLastMoveLeft(int index) throws IOException, SQLException {
+		if(!moveEnemyLeft(index)){
+			if(!moveEnemyUp(index)){
+				if(!moveEnemyRight(index)){
+					moveEnemyDown(index);
+				}
+			}
+		}
+	}
+	/**
+	 * move the enemy if his last move is on the up
+	 * @param index
+	 * index of the enemy position in ArrayList
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws SQLException
+	 * throws sql related exception
+	 */
+
+	public void moveEnemyLastMoveUp(int index) throws IOException, SQLException {
+		if(!moveEnemyUp(index)){
+			if(!moveEnemyRight(index)){
+				if(!moveEnemyDown(index)){
+					moveEnemyLeft(index);
+				}
+			}
+		}
+	}
+
+	/**
+	 * move the enemy if his last move is on the down
+	 * @param index
+	 * index of the enemy position in ArrayList
+	 * @throws IOException
+	 * throws image related exception
+	 * @throws SQLException
+	 * throws sql related exception
+	 */
+	public void moveEnemyLastMoveDown(int index) throws IOException, SQLException {
+		if(!moveEnemyDown(index)){
+			if(!moveEnemyLeft(index)){
+				if(!moveEnemyUp(index)){
+					moveEnemyRight(index);
+				}
+			}
+		}
+	}
+
 
 	/**
 	 * set Win to true and restart the diamond counter

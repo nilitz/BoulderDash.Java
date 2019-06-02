@@ -39,10 +39,8 @@ public abstract class Object {
      * lastmove of the object
      * @param lastIndex
      * lastindex of the object
-     * @throws IOException
-     * throws image related exception
      */
-    public Object(String name, boolean status, LastMove lastMove, int lastIndex) throws IOException {
+    public Object(String name, boolean status, LastMove lastMove, int lastIndex){
         this.setName(name);
         this.setStatus(status);
         this.setLastMove(lastMove);
