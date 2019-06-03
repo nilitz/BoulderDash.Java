@@ -30,7 +30,7 @@ class ViewPanel extends JPanel implements Observer {
 	/** number of sprites in the animation**/
 	private final int nbSprite = 4;
 	/** refresh speed **/
-	private final int refresh = 8;
+	private final int refresh = 18;
 	/** number of loop **/
 	private int loopCounter = 0;
 	/** resources Pack **/
@@ -39,6 +39,9 @@ class ViewPanel extends JPanel implements Observer {
 	private Image image = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.resourcesPack + "/Ground_Two/Ground_Two.png"));
 	/** The Counter Image **/
 	private Image counter = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.resourcesPack + "/Diamond/Diamond_1.png"));
+	/** Instantiate a new Sound */
+	Sound sound = new Sound("Map");
+
 	/**
 	 * Instantiates a new view panel.
 	 *
@@ -69,6 +72,8 @@ class ViewPanel extends JPanel implements Observer {
 	 */
 	private void setViewFrame(final ViewFrame viewFrame) {
 		this.viewFrame = viewFrame;
+		sound.setCurrentSongIndex(0);
+		sound.run();
 	}
 
 	/*
