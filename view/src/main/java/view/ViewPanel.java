@@ -86,7 +86,6 @@ class ViewPanel extends JPanel implements Observer {
 		graphics.fillRect(getWidth() / 2 - 120, 10, 240, 30);
 		graphics.setColor(Color.BLACK);
 		graphics.fillRect(getWidth() / 2 - 119, 11, 238, 28);
-
 		graphics.setColor(Color.BLUE);
 		graphics.fillRect(getWidth() / 2 - 119, 11, (this.viewFrame.getModel().getDiamondCounter() * 238) / this.viewFrame.getModel().getDiamondToHave(), 28);
 }
@@ -102,6 +101,7 @@ class ViewPanel extends JPanel implements Observer {
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font("Verdana", Font.BOLD, 80));
 		graphics.drawString("YOU ARE DEAD", this.viewFrame.getHeight() / 7, this.viewFrame.getHeight() / 2 - 20);
+
 	}
 
 	/**
@@ -184,9 +184,7 @@ class ViewPanel extends JPanel implements Observer {
 			this.loopCounter = 0;
 		}
 		else {this.loopCounter++;}
-		if(this.actualSprite == (this.nbSprite + 1)) {
-			this.actualSprite = 1;
-		}
+		if(this.actualSprite == (this.nbSprite + 1)) { this.actualSprite = 1; }
 		try {
 			this.getViewFrame().adaptWindow();
 		} catch (SQLException e) {

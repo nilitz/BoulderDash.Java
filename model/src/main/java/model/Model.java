@@ -23,7 +23,7 @@ public final class Model extends Observable implements IModel {
 	/** instantiate a new DAOMap*/
 	private DAOMap DAO = new DAOMap(DBConnection.getInstance().getConnection());
 	/** The map ID*/
-	private int ID = 4;
+	private int ID = 4;  //MODEL TESTS ONLY WORK WITH THE MAP N°4 ALL THE TESTS ARE DONE WITH THIS MAP SO DON'T CHANGE IT IF YOU WANT TO RUN THE TESTS
 	/** the Controller Order*/
 	private ControllerOrder controllerOrder;
 	/** the player index in the ArrayList*/
@@ -67,7 +67,7 @@ public final class Model extends Observable implements IModel {
 	 * @param finish
 	 * finish position of the Object in the ArrayList
 	 */
-	public void swap(int start, int finish) {
+	void swap(int start, int finish) {
 		Object temp = this.map.get(finish).getObject();
 		this.map.get(finish).setObject(map.get(start).getObject());
 		this.map.get(start).setObject(temp);
@@ -79,13 +79,9 @@ public final class Model extends Observable implements IModel {
 	 * start position of the Object in the ArrayList
 	 * @param finish
 	 * finish position of the Object in the ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void swapToGroundTwo(int start, int finish) throws IOException {
-		Object temp = this.map.get(finish).getObject();
-		this.map.get(finish).setObject(map.get(start).getObject());
-		this.map.get(start).setObject(temp);
+	void swapToGroundTwo(int start, int finish) {
+		swap(start, finish);
 		changeObjectToGroundTwo(start);
 	}
 
@@ -93,10 +89,8 @@ public final class Model extends Observable implements IModel {
 	 * Change an Object to Ground_Two at the indicated index
 	 * @param index
 	 * index of the object to change in the ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void changeObjectToGroundTwo(int index) throws IOException {
+	void changeObjectToGroundTwo(int index) {
 		if (!this.map.get(index).getObject().getName().equals("Wall_One")){
 			Ground_Two ground_two = new Ground_Two("Ground_Two", false, LastMove.NOTHING, -1);
 			this.map.get(index).setObject(ground_two);
@@ -107,10 +101,8 @@ public final class Model extends Observable implements IModel {
 	 * Change an Object to Diamond at the indicated index
 	 * @param index
 	 * index of the object to change in the ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void changeObjectToDiamond(int index) throws IOException {
+	void changeObjectToDiamond(int index)  {
 		if (!this.map.get(index).getObject().getName().equals("Wall_One")){
 			Diamond diamond = new Diamond("Diamond", false, LastMove.NOTHING, -1);
 			this.map.get(index).setObject(diamond);
@@ -123,9 +115,9 @@ public final class Model extends Observable implements IModel {
 	 * return true : playerIsDead | false : playerIsAlive
 	 */
 	public boolean playerStatus(){
-		for(int i = 0; i < this.map.size(); i++){
-			if(this.map.get(i).getObject().getName().equals("Player_One")){
-				return this.map.get(i).getObject().getStatus();
+		for (MapTile mapTile : this.map) {
+			if (mapTile.getObject().getName().equals("Player_One")) {
+				return mapTile.getObject().getStatus();
 			}
 		}
 		return true;
@@ -140,14 +132,14 @@ public final class Model extends Observable implements IModel {
 	 * @return
 	 * return true : isFalling | false : isStatic
 	 */
-	public boolean checkFalling(int index){
+	boolean checkFalling(int index){
 		return this.map.get(index).getObject().getStatus();
 	}
 
 	/**
 	 * Locate the player in the ArrayList
 	 */
-	public void locatePlayer(){
+	void locatePlayer(){
 		for(int incr = 0; incr < map.size(); incr++){
 			if (this.map.get(incr).getObject().getName().equals("Player_One") && !this.map.get(incr).getObject().getStatus()){
 				this.indexPlayer = incr;
@@ -160,7 +152,7 @@ public final class Model extends Observable implements IModel {
 	 * @return
 	 * return the name of the next player Case
 	 */
-	public String playerNextCase(){
+	String playerNextCase(){
 		return this.map.get(this.indexPlayer + this.direction).getObject().getName();
 	}
 
@@ -173,7 +165,7 @@ public final class Model extends Observable implements IModel {
 	 * @return
 	 * return the name of the next case (actual position + direction)
 	 */
-	public String nextCase(int index, int direction){
+	String nextCase(int index, int direction){
 		return this.map.get(index + direction).getObject().getName();
 	}
 
@@ -186,7 +178,7 @@ public final class Model extends Observable implements IModel {
 	 * @return
 	 * return a code according to the nextCase() method
 	 */
-	public int aroundCode(int index, int direction){
+	int aroundCode(int index, int direction){
 		int codeReturn;
 		switch (nextCase(index, direction)){
 			case ("Ground_Two") :
@@ -208,7 +200,7 @@ public final class Model extends Observable implements IModel {
 	 * @param lastMove
 	 * direction of the move
 	 */
-	public void changeLastMove(int index, LastMove lastMove){
+	void changeLastMove(int index, LastMove lastMove){
 		this.map.get(index).getObject().setLastMove(lastMove);
 		this.map.get(index).getObject().setLastIndex(index);
 	}
@@ -219,10 +211,8 @@ public final class Model extends Observable implements IModel {
 	 * direction indicated by the Controller
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void movement(String direction) throws SQLException, IOException {
+	public void movement(String direction) throws SQLException {
 		if(getMoveable()){
 			if (playerStatus()){direction = "NOTHING";}
 			switch (direction) {
@@ -255,12 +245,8 @@ public final class Model extends Observable implements IModel {
 
 	/**
 	 * Check Player Next Case and decide if he can move / die / collect Diamond / do Nothing
-	 * @throws SQLException
-	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void switchArray() throws SQLException, IOException {
+	void switchArray() {
 		if (playerNextCase().equals("Rock") && this.controllerOrder != ControllerOrder.UP && this.controllerOrder != ControllerOrder.DOWN){
 			moveRock();
 		}
@@ -280,12 +266,8 @@ public final class Model extends Observable implements IModel {
 
 	/**
 	 * Combine swapping methods to move the player
-	 * @throws SQLException
-	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void movePlayer() throws SQLException, IOException {
+	void movePlayer() {
 		locatePlayer();
 		if (playerNextCase().equals("Ground_One") || playerNextCase().equals("Diamond") || playerNextCase().equals("Ground_Two")){
 			swapToGroundTwo(this.indexPlayer, this.indexPlayer + this.direction);
@@ -304,10 +286,8 @@ public final class Model extends Observable implements IModel {
 	 * direction where to move
 	 * @return
 	 * return a boolean if the enemy move (true) or not (false)
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public boolean moveEnemy(int index, int direction) throws IOException {
+	boolean moveEnemy(int index, int direction) {
 		switch(aroundCode(index, direction)){
 			case(0):
 				swap(index, index + direction);
@@ -328,10 +308,8 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @return
 	 * return true : he moved | false : he can't move
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public boolean moveEnemyRight(int index) throws IOException {
+	private boolean moveEnemyRight(int index) {
 		if(moveEnemy(index, 1)){
 			changeLastMove(index + 1, LastMove.RIGHT);
 			return true;
@@ -345,12 +323,10 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @return
 	 * return true : he moved | false : he can't move
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
-	public boolean moveEnemyDown(int index) throws SQLException, IOException {
+	private boolean moveEnemyDown(int index) throws SQLException {
 		if(moveEnemy(index, getMapWidth())){
 			changeLastMove(index + getMapWidth(), LastMove.DOWN);
 			return true;
@@ -363,10 +339,8 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @return
 	 * return true : he moved | false : he can't move
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public boolean moveEnemyLeft(int index) throws IOException {
+	private boolean moveEnemyLeft(int index) {
 		if(moveEnemy(index, - 1)){
 			changeLastMove(index - 1, LastMove.LEFT);
 			return true;
@@ -379,12 +353,10 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @return
 	 * return true : he moved | false : he can't move
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
-	public boolean moveEnemyUp(int index) throws SQLException, IOException {
+	private boolean moveEnemyUp(int index) throws SQLException {
 		if(moveEnemy(index, - getMapWidth())){
 			changeLastMove(index - getMapWidth(), LastMove.UP);
 			return true;
@@ -401,10 +373,8 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void enemyAutoMove(int index) throws SQLException, IOException {
+	public void enemyAutoMove(int index) throws SQLException {
 		if(this.map.get(index).getObject().getLastIndex() != index){
 			switch (this.map.get(index).getObject().getLastMove()){
 				case RIGHT:
@@ -432,12 +402,10 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws InterruptedException
-	 * throws thread related exception
 	 * @throws IOException
 	 * throws image related exception
 	 */
-	public void autoMove(int index) throws SQLException, InterruptedException, IOException {
+	public void autoMove(int index) throws SQLException, IOException {
 		if (nextCase(index, 0).equals("Rock") || nextCase(index, 0).equals("Diamond")){
 			if (checkFalling(index)){
 				switch(nextCase(index, getMapWidth())){
@@ -451,7 +419,7 @@ public final class Model extends Observable implements IModel {
 						break;
 					case "Ground_One":
 						this.map.get(index).getObject().setStatus(false);
-						whereToMove(index);
+						//whereToMove(index); // YOU CAN ACTIVATE IT IF YOU WANT AN OTHER GAMEPLAY WITH ROCKS AND DIAMONDS SLIDING ON GROUND_ONE ENTITIES
 						break;
 					case "Enemy_One":
 						diamondsTNT(index);
@@ -475,39 +443,22 @@ public final class Model extends Observable implements IModel {
 	 * index of the position in the ArrayList
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws InterruptedException
-	 * throws thread related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void diamondsTNT(int index) throws SQLException, InterruptedException, IOException {
-		changeObjectToDiamond(index);
-		Thread.sleep(50);
-		changeObjectToDiamond(index + 1);
-		Thread.sleep(50);
-		changeObjectToDiamond(index - 1);
-		Thread.sleep(50);
-		changeObjectToDiamond(index + getMapWidth());
-		Thread.sleep(50);
-		changeObjectToDiamond(index + getMapWidth() - 1);
-		Thread.sleep(50);
-		changeObjectToDiamond(index + getMapWidth() + 1);
-		Thread.sleep(50);
-		changeObjectToDiamond(index + 2 * getMapWidth());
-		Thread.sleep(50);
-		changeObjectToDiamond(index + 2 * getMapWidth() - 1);
-		Thread.sleep(50);
-		changeObjectToDiamond(index + 2 * getMapWidth() + 1);
-		Thread.sleep(50);}
-
+	void diamondsTNT(int index) throws SQLException {
+		for (int i = index - 1;i <= index + 1; i ++){
+			changeObjectToDiamond(i);
+		}
+		for (int i = index + getMapWidth() - 1;i <= index + getMapWidth() + 1; i ++){
+			changeObjectToDiamond(i);
+		}
+		for (int i = index + 2 * getMapWidth() - 1;i <= index + 2 * getMapWidth() + 1; i ++){
+			changeObjectToDiamond(i);
+		}
+	}
 	/**
 	 * Check if a player can move a Rock (and move it if he can)
-	 * @throws SQLException
-	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void moveRock() throws SQLException, IOException {
+	void moveRock() {
 		if (nextCase(this.indexPlayer + 2 * this.direction, 0).equals("Ground_Two") && (this.direction == 1 || this.direction == -1) ){
 			movePlayer();
 		}
@@ -520,12 +471,8 @@ public final class Model extends Observable implements IModel {
 	 * index of the position in the ArrayList
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws InterruptedException
-	 * throws thread related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void whereToMove(int index) throws SQLException, IOException, InterruptedException {
+	void whereToMove(int index) throws SQLException {
 		if ((nextCase(index - 1, 0).equals("Ground_Two") && nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two")) || ((nextCase(index - 1, 0).equals("Player_One") || nextCase(index + getMapWidth() - 1, 0).equals("Player_One")) && (nextCase(index - 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two"))) || ((nextCase(index - 1, 0).equals("Enemy_One") || nextCase(index + getMapWidth() - 1, 0).equals("Enemy_One")) && (nextCase(index - 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two"))) ) {
 			swap(index, index + getMapWidth() - 1);
 			this.map.get(index).getObject().setStatus(true);
@@ -568,12 +515,10 @@ public final class Model extends Observable implements IModel {
 	 * move the enemy if his last move is on the right
 	 * @param index
 	 * index of the enemy position in ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
-	public void moveEnemyLastMoveRight(int index) throws IOException, SQLException {
+	private void moveEnemyLastMoveRight(int index) throws SQLException {
 		if(!moveEnemyRight(index)){
 			if(!moveEnemyDown(index)){
 				if(!moveEnemyLeft(index)){
@@ -586,12 +531,10 @@ public final class Model extends Observable implements IModel {
 	 * move the enemy if his last move is on the left
 	 * @param index
 	 * index of the enemy position in ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
-	public void moveEnemyLastMoveLeft(int index) throws IOException, SQLException {
+	private void moveEnemyLastMoveLeft(int index) throws SQLException {
 		if(!moveEnemyLeft(index)){
 			if(!moveEnemyUp(index)){
 				if(!moveEnemyRight(index)){
@@ -604,13 +547,11 @@ public final class Model extends Observable implements IModel {
 	 * move the enemy if his last move is on the up
 	 * @param index
 	 * index of the enemy position in ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
 
-	public void moveEnemyLastMoveUp(int index) throws IOException, SQLException {
+	private void moveEnemyLastMoveUp(int index) throws SQLException {
 		if(!moveEnemyUp(index)){
 			if(!moveEnemyRight(index)){
 				if(!moveEnemyDown(index)){
@@ -624,12 +565,10 @@ public final class Model extends Observable implements IModel {
 	 * move the enemy if his last move is on the down
 	 * @param index
 	 * index of the enemy position in ArrayList
-	 * @throws IOException
-	 * throws image related exception
 	 * @throws SQLException
 	 * throws sql related exception
 	 */
-	public void moveEnemyLastMoveDown(int index) throws IOException, SQLException {
+	private void moveEnemyLastMoveDown(int index) throws SQLException {
 		if(!moveEnemyDown(index)){
 			if(!moveEnemyLeft(index)){
 				if(!moveEnemyUp(index)){
@@ -643,7 +582,7 @@ public final class Model extends Observable implements IModel {
 	/**
 	 * set Win to true and restart the diamond counter
 	 */
-	public void gameWin(){
+	void gameWin(){
 		setWin(true);
 		setDiamondCounter(0);
 	}
@@ -651,11 +590,9 @@ public final class Model extends Observable implements IModel {
 	/**
 	 * Add a diamond to the counter and check if the value is reached
 	 */
-	public void collectDiamond(){
+	void collectDiamond(){
 		this.diamondCounter++;
-		if (this.diamondCounter == this.diamondToHave){
-			gameWin();
-		}
+		if (this.diamondCounter == this.diamondToHave){ gameWin(); }
 	}
 
 
@@ -736,7 +673,14 @@ public final class Model extends Observable implements IModel {
 	 * @param controllerOrder
 	 * ControllerOrder enum
 	 */
-	private void setControllerOrder(ControllerOrder controllerOrder) { this.controllerOrder = controllerOrder; }
+	void setControllerOrder(ControllerOrder controllerOrder) { this.controllerOrder = controllerOrder; }
+	/**
+	 * ControllerOrder Getter
+	 * @return Controller Order
+	 */
+	ControllerOrder getControllerOrder() {
+		return controllerOrder;
+	}
 
 	/**
 	 * Win Setter (true = win)
@@ -792,18 +736,32 @@ public final class Model extends Observable implements IModel {
 	public int getDiamondNumber(int ID) throws SQLException{ return DAO.getDiamondNumber(ID); }
 
 	/**
+	 * isMoveable Setter
 	 * @param moveable
 	 * boolean moveable : if true = player is Moveable | false = player is not Moveable
 	 */
-	public void setMoveable(boolean moveable) {
-		isMoveable = moveable;
-	}
+	public void setMoveable(boolean moveable) { isMoveable = moveable; }
 
 	/**
+	 * isMoveable Getter
 	 * @return
 	 * return if the player is moveable (true) or not (false)
 	 */
-	public boolean getMoveable(){
-		return this.isMoveable;
+	private boolean getMoveable(){ return this.isMoveable; }
+
+	/**
+	 * indexPlayer Getter
+	 * @return
+	 * return the index of the player
+	 */
+	int getIndexPlayer() {
+		return indexPlayer;
 	}
+
+	/**
+	 * Direction Setter
+	 * @param direction
+	 * direction
+	 */
+	void setDirection(int direction) { this.direction = direction; }
 }

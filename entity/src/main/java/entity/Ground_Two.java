@@ -19,10 +19,8 @@ public class Ground_Two extends Object {
      * lastmove of the object
      * @param lastIndex
      * lastindex of the object
-     * @throws IOException
-     * throws image related exception
      */
-    public Ground_Two(String name, boolean status, LastMove lastMove, int lastIndex) throws IOException {
+    public Ground_Two(String name, boolean status, LastMove lastMove, int lastIndex) {
         super(name, status, lastMove, lastIndex);
     }
     /**

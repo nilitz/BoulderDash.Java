@@ -18,10 +18,8 @@ public class Wall_One extends Object {
      * lastmove of the object
      * @param lastIndex
      * lastindex of the object
-     * @throws IOException
-     * throws image related exception
      */
-    public Wall_One(String name, boolean status, LastMove lastMove, int lastIndex) throws IOException {
+    public Wall_One(String name, boolean status, LastMove lastMove, int lastIndex) {
         super(name, status, lastMove, lastIndex);
     }
     /**
