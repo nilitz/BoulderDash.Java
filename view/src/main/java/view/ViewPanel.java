@@ -2,6 +2,7 @@ package view;
 import entity.MapTile;
 
 import java.awt.*;
+import java.awt.image.ImageObserver;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -16,7 +17,7 @@ import javax.swing.JPanel;
 /**
  * The Class ViewPanel.
  *
- * @author De Grossi Hugo And Geraldi Guillaume
+ * @author De Grossi Hugo And Girardi Guillaume
  */
 class ViewPanel extends JPanel implements Observer {
 
@@ -36,7 +37,8 @@ class ViewPanel extends JPanel implements Observer {
 	private String resourcesPack = "NES2";
 	/** The Background Image **/
 	private Image image = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.resourcesPack + "/Ground_Two/Ground_Two.png"));
-
+	/** The Counter Image **/
+	private Image counter = ImageIO.read(getClass().getClassLoader().getResource("./sprites/" + this.resourcesPack + "/Diamond/Diamond_1.png"));
 	/**
 	 * Instantiates a new view panel.
 	 *
@@ -83,12 +85,17 @@ class ViewPanel extends JPanel implements Observer {
 	 */
 	public void showCounter(Graphics graphics){
 		graphics.setColor(Color.WHITE);
-		graphics.fillRect(getWidth() / 2 - 120, 10, 240, 30);
+		graphics.fillRect(getWidth() / 2 - 120, 8, 240, 35);
 		graphics.setColor(Color.BLACK);
-		graphics.fillRect(getWidth() / 2 - 119, 11, 238, 28);
+		graphics.fillRect(getWidth() / 2 - 119, 9, 238, 33);
 		graphics.setColor(Color.BLUE);
-		graphics.fillRect(getWidth() / 2 - 119, 11, (this.viewFrame.getModel().getDiamondCounter() * 238) / this.viewFrame.getModel().getDiamondToHave(), 28);
-}
+		graphics.fillRect(getWidth() / 2 - 119, 9, (this.viewFrame.getModel().getDiamondCounter() * 238) / this.viewFrame.getModel().getDiamondToHave(), 33);
+		graphics.setColor(Color.WHITE);
+		graphics.setFont(new Font("Verdana", Font.BOLD, 18));
+		graphics.drawString(this.viewFrame.getModel().getDiamondCounter() + " OF " + this.viewFrame.getModel().getDiamondToHave(), getWidth() / 2 - 35,32);
+		graphics.drawImage(counter, getWidth() / 2 + 80, 8,30,30, null);
+	}
+
 
 	/**
 	 * display a death message
@@ -101,7 +108,7 @@ class ViewPanel extends JPanel implements Observer {
 		graphics.setColor(Color.WHITE);
 		graphics.setFont(new Font("Verdana", Font.BOLD, 80));
 		graphics.drawString("YOU ARE DEAD", this.viewFrame.getHeight() / 7, this.viewFrame.getHeight() / 2 - 20);
-
+		graphics.setColor(Color.BLACK);
 	}
 
 	/**
@@ -138,7 +145,7 @@ class ViewPanel extends JPanel implements Observer {
 			graphics.drawImage(imageTemp, drawMap.get(i).getX() * 3, drawMap.get(i).getY() * 3, 48, 48, null);
 		}
 		for(int i = 0; i < drawMap.size(); i++) {
-
+			//viewFrame.setCode(viewFrame.getCode() + drawMap.get(i).getObject());
 			if (drawMap.get(i).getObject().getName().equals("Player_One") || drawMap.get(i).getObject().getName().equals("Enemy_One")) {
 				switch (drawMap.get(i).getObject().getLastMove()){
 					case UP:

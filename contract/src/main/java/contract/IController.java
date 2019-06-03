@@ -25,4 +25,8 @@ public interface IController {
 	 * throws image related exception
 	 */
 	void orderPerform(ControllerOrder controllerOrder) throws SQLException, IOException;
+
+	int autoMoveController() throws InterruptedException, SQLException, IOException;
+
+
 }

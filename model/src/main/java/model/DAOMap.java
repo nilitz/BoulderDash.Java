@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * The Class DAOMap.
  *
- * @author De Grossi Hugo
+ * @author De Grossi Hugo And Girardi Guillaume
  */
 public class DAOMap {
 

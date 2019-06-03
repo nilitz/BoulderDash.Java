@@ -16,7 +16,7 @@ import contract.IModel;
 /**
  * The Class ViewFrame.
  *
- * @author Jean-Aymeric Diet
+ * @author Girardi Guillaume And De Grossi Hugo
  */
 class ViewFrame extends JFrame implements KeyListener {
 
@@ -24,6 +24,10 @@ class ViewFrame extends JFrame implements KeyListener {
 	 * The model.
 	 */
 	private IModel model;
+	/**
+	 * The code.
+	 */
+	private String code = "";
 
 	/**
 	 * The controller.
@@ -141,6 +145,22 @@ class ViewFrame extends JFrame implements KeyListener {
 		this.model = model;
 	}
 
+	/**
+	 * Code Getter
+	 * @return the viewPanel Code
+	 */
+	public String getCode() {
+		return code;
+	}
+
+	/**
+	 * Code Setter
+	 * @param code
+	 * take the ViewPanel code in parameters
+	 */
+	public void setCode(String code) {
+		this.code = code;
+	}
 
 	/**
 	 * Prints the message.

@@ -10,11 +10,13 @@ import java.sql.SQLException;
 
 /**
  * The Class Controller.
+ *
+ * @author De Grossi Hugo
  */
 public final class Controller implements IController {
 
 	/** The view. */
-	private IView		view;
+	private IView view;
 
 	/** The model. */
 	private IModel	model;
@@ -120,7 +122,7 @@ public final class Controller implements IController {
 	 * @throws InterruptedException
 	 * throws thread related exception
 	 */
-	private int autoMoveController() throws InterruptedException, SQLException, IOException {
+	public int autoMoveController() throws InterruptedException, SQLException, IOException {
 		for (int index = (this.model.getMapWidth() * this.model.getMapHeight()) - 1; index >= 0; index--){
 			this.model.autoMove(index);
 		}

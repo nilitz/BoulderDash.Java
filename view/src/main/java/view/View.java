@@ -14,7 +14,7 @@ import contract.IView;
 /**
  * The Class View.
  *
- * @author Geraldi Guillaume And De Grossi Hugo
+ * @author Girardi Guillaume And De Grossi Hugo
  */
 public final class View implements IView, Runnable {
 
@@ -88,6 +88,13 @@ public final class View implements IView, Runnable {
 
 	public ViewFrame getViewFrame() {
 		return viewFrame;
+	}
+
+	public String getCode(){
+		return this.viewFrame.getCode();
+	}
+	public void setCode(String code){
+		this.viewFrame.setCode(code);
 	}
 
 	public void closeFrame(){

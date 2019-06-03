@@ -402,10 +402,8 @@ public final class Model extends Observable implements IModel {
 	 * index of the actual position in the ArrayList
 	 * @throws SQLException
 	 * throws sql related exception
-	 * @throws IOException
-	 * throws image related exception
 	 */
-	public void autoMove(int index) throws SQLException, IOException {
+	public void autoMove(int index) throws SQLException {
 		if (nextCase(index, 0).equals("Rock") || nextCase(index, 0).equals("Diamond")){
 			if (checkFalling(index)){
 				switch(nextCase(index, getMapWidth())){
@@ -432,6 +430,11 @@ public final class Model extends Observable implements IModel {
 			else if("Ground_Two".equals(nextCase(index, getMapWidth()))){
 				this.map.get(index).getObject().setStatus(true);
 			}
+			/* //YOU CAN DELETE THE COMMENTARY SO THE DIAMONDS AND ROCKS AUTOMATICALLY FALL WHEN THERE'S A DIAMOND / ROCK UNDER THEM
+			else if("Diamond".equals(nextCase(index, getMapWidth())) || "Rock".equals(nextCase(index, getMapWidth()))){
+				whereToMove(index);
+			}
+			 */
 		} else if(nextCase(index, 0).equals("Enemy_One")){
 			enemyAutoMove(index);
 		}
@@ -474,8 +477,7 @@ public final class Model extends Observable implements IModel {
 	 */
 	void whereToMove(int index) throws SQLException {
 		if ((nextCase(index - 1, 0).equals("Ground_Two") && nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two")) || ((nextCase(index - 1, 0).equals("Player_One") || nextCase(index + getMapWidth() - 1, 0).equals("Player_One")) && (nextCase(index - 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two"))) || ((nextCase(index - 1, 0).equals("Enemy_One") || nextCase(index + getMapWidth() - 1, 0).equals("Enemy_One")) && (nextCase(index - 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() - 1, 0).equals("Ground_Two"))) ) {
-			swap(index, index + getMapWidth() - 1);
-			this.map.get(index).getObject().setStatus(true);
+
 			if(nextCase(index, - 1).equals("Enemy_One") || nextCase(index, - getMapWidth()).equals("Enemy_One") ){
 				diamondsTNT(index - getMapWidth());
 			}
@@ -484,10 +486,11 @@ public final class Model extends Observable implements IModel {
 				diamondsTNT(index - getMapWidth());
 				this.map.get(this.indexPlayer).getObject().setStatus(true);
 			}
+			swap(index, index + getMapWidth() - 1);
+			this.map.get(index).getObject().setStatus(true);
 		}
 		else if((nextCase(index + 1, 0).equals("Ground_Two") && nextCase(index + getMapWidth() + 1, 0).equals("Ground_Two")) || ((nextCase(index + 1, 0).equals("Player_One") && nextCase(index + getMapWidth() + 1, 0).equals("Player_One")) && (nextCase(index + 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() + 1, 0).equals("Ground_Two"))) || ((nextCase(index + 1, 0).equals("Enemy_One") && nextCase(index + getMapWidth() + 1, 0).equals("Enemy_One")) && (nextCase(index + 1, 0).equals("Ground_Two") || nextCase(index + getMapWidth() + 1, 0).equals("Ground_Two"))) ) {
-			swap(index, index + getMapWidth() + 1);
-			this.map.get(index).getObject().setStatus(true);
+
 			if(nextCase(index,  1).equals("Player_One") || nextCase(index,  getMapWidth()).equals("Player_One")){
 				locatePlayer();
 				diamondsTNT(index + getMapWidth());
@@ -496,6 +499,8 @@ public final class Model extends Observable implements IModel {
 			} else if(nextCase(index, 1).equals("Enemy_One") || nextCase(index, getMapWidth()).equals("Enemy_One") ){
 				diamondsTNT(index + getMapWidth());
 			}
+			swap(index, index + getMapWidth() + 1);
+			this.map.get(index).getObject().setStatus(true);
 		}
 		else {
 			this.map.get(index).getObject().setStatus(false);
@@ -538,10 +543,7 @@ public final class Model extends Observable implements IModel {
 		if(!moveEnemyLeft(index)){
 			if(!moveEnemyUp(index)){
 				if(!moveEnemyRight(index)){
-					moveEnemyDown(index);
-				}
-			}
-		}
+					moveEnemyDown(index); } } }
 	}
 	/**
 	 * move the enemy if his last move is on the up
@@ -554,12 +556,8 @@ public final class Model extends Observable implements IModel {
 	private void moveEnemyLastMoveUp(int index) throws SQLException {
 		if(!moveEnemyUp(index)){
 			if(!moveEnemyRight(index)){
-				if(!moveEnemyDown(index)){
-					moveEnemyLeft(index);
-				}
-			}
-		}
-	}
+			if(!moveEnemyDown(index)){
+				moveEnemyLeft(index); } } } }
 
 	/**
 	 * move the enemy if his last move is on the down
@@ -572,11 +570,7 @@ public final class Model extends Observable implements IModel {
 		if(!moveEnemyDown(index)){
 			if(!moveEnemyLeft(index)){
 				if(!moveEnemyUp(index)){
-					moveEnemyRight(index);
-				}
-			}
-		}
-	}
+					moveEnemyRight(index); } } } }
 
 
 	/**

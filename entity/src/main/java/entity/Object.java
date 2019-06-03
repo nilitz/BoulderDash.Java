@@ -171,9 +171,7 @@ public abstract class Object {
      * @return
      * return the image 4
      */
-    public Image getImage4() {
-        return image4;
-    }
+    public Image getImage4() { return image4; }
 
     /**
      * loadimage - load all the image of an object
@@ -185,25 +183,26 @@ public abstract class Object {
      * @param lastIndex
      * set the lastindex
      */
-    public void setLastIndex(int lastIndex) {
-        this.lastIndex = lastIndex;
-    }
+    public void setLastIndex(int lastIndex) { this.lastIndex = lastIndex; }
 
     /**
      * lastindex getter
      * @return
      * return the last index
      */
-    public int getLastIndex() {
-        return lastIndex;
-    }
+    public int getLastIndex() { return lastIndex; }
 
     /**
-     * resourcespack getter
+     * resourcesPack getter
      * @return
      * return the resources pack
      */
-    public String getResourcesPack() {
-        return resourcesPack;
-    }
+    public String getResourcesPack() { return resourcesPack; }
+
+    /**
+     * resourcesPack setter
+     * @param resourcesPack
+     * take the name of the ressources pack in parameter (NES1 / NES2 / NES3)
+     */
+    public void setResourcesPack(String resourcesPack) { this.resourcesPack = resourcesPack; }
 }
