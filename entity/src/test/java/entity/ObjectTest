@@ -1,0 +1,45 @@
+package entity;
+
+import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+
+public class ObjectTest {
+
+    private String name = "name";
+    private boolean testBoolean = true;
+    private Rock testObject = new Rock(name, testBoolean);
+
+    /**
+     * TEST | Test the setName and getName methods
+     */
+    @Test
+    public void getNameTest() {
+        name = "test";
+        testObject.setName(name);
+
+        //--------------- getName method ---------------
+        String result = testObject.getName();
+        //--------------- getName method ---------------
+
+        assertEquals(result, "test");
+    }
+
+
+    /**
+     * TEST | Test the setStatus and getStatus methods
+     */
+    @Test
+    public void getStatusTest(){
+        testBoolean = false;
+        testObject.setStatus(testBoolean);
+
+        //--------------- getStatus method ---------------
+        Boolean result = testObject.getStatus();
+        //--------------- getStatus method ---------------
+
+        assertEquals(result, false);
+    }
+
+
+}
